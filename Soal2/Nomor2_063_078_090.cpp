@@ -1,9 +1,9 @@
 /*
-Nama Program  : 
+Nama Program  : Gaji Pegawai
 Nama Kelompok : Tim PeBO 
-Nama Anggota  : Razan Ibrahim Nabil
-NPM  Anggota  : 140810250090
-Tanggal Buat  : 16/09/2026
+Nama Anggota  : Razan Ibrahim Nabil, Muhammah Irsyad Azzarul Haq, Djeremy Rieldy Marchiano Panjaitan
+NPM  Anggota  : 140810250090, 250078, 250063
+Tanggal Buat  : 24/09/2026
 Deskripsi     : 
 */
 
