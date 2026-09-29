@@ -7,8 +7,9 @@ Tanggal Buat  : 16/09/2026
 Deskripsi     : Mnecari titik tengah , cermin terhadap x , dan cermin terhadap y
 """
 
+import math
+
 class Koordinat:
-    # Memadukan Default dan Parameterized Constructor
     def __init__(self, absis=0.0, ordinat=0.0):
         self.absis = absis
         self.ordinat = ordinat
@@ -31,7 +32,6 @@ class Koordinat:
         ordinat = float(input("Masukkan Nilai Ordinat = "))
         self.setOrdinat(ordinat)
 
-    # --- FUNGSI VOID ---
     def titikTengahVoid(self, a, b):
         self.absis = (a.absis + b.absis) / 2
         self.ordinat = (a.ordinat + b.ordinat) / 2
@@ -44,7 +44,6 @@ class Koordinat:
         self.absis = -a.absis
         self.ordinat = a.ordinat
 
-    # --- FUNGSI RETURN ---
     def titikTengahReturn(self, b):
         temp = Koordinat(0, 0)
         temp.absis = (self.absis + b.absis) / 2
@@ -63,7 +62,16 @@ class Koordinat:
         temp.ordinat = self.ordinat
         return temp
 
-    # --- FUNGSI CETAK ---
+    def jarak (self , a , b):
+        jarak = math.sqrt(((b.absis - a.absis)**2) + ((b.ordinat - a.ordinat)**2))
+
+        return jarak
+
+    def jarak (self , a):
+        jarak = math.sqrt(((self.absis - a.absis)**2) + ((self.ordinat - a.ordinat)**2))
+
+        print("JARAK ANTARA A DAN B = " , jarak)
+
     def cetakVoid(self, a, b, c, d, e):
         print("HASIL AKHIR : (VOID)")
         print(f"TITIK A = ({a.getAbsis()},{a.getOrdinat()})")
@@ -71,6 +79,7 @@ class Koordinat:
         print(f"TITIK TENGAH = ({c.getAbsis()},{c.getOrdinat()})")
         print(f"CERMIN TERHADAP X = ({d.getAbsis()},{d.getOrdinat()})")
         print(f"CERMIN TERHADAP Y = ({e.getAbsis()},{e.getOrdinat()})")
+        b.jarak(a)
 
     def cetakReturn(self, a, b, c, d, e):
         print("HASIL AKHIR : (RETURN)")
@@ -79,8 +88,8 @@ class Koordinat:
         print(f"TITIK TENGAH = ({c.getAbsis()},{c.getOrdinat()})")
         print(f"CERMIN TERHADAP X = ({d.getAbsis()},{d.getOrdinat()})")
         print(f"CERMIN TERHADAP Y = ({e.getAbsis()},{e.getOrdinat()})")
+        print("JARAK ANTARA A DAN B = " , self.jarak(a,b))
 
-# --- MAIN METHOD ---
 if __name__ == "__main__":
     printer = Koordinat()
     menuUtamaAktif = True

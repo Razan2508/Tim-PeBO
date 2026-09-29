@@ -8,6 +8,7 @@ Deskripsi     : Mnecari titik tengah , cermin terhadap x , dan cermin terhadap y
 */
 
 import java.util.Scanner;
+import java.lang.Math;
 
 class Koordinat {
     private double absis; 
@@ -50,8 +51,6 @@ class Koordinat {
         setOrdinat(ordinat);
     }
 
-    // --- FUNGSI VOID ---
-
     public void titikTengah (Koordinat a , Koordinat b) {
         this.absis = (a.absis + b.absis) / 2;
         this.ordinat = (a.ordinat + b.ordinat) / 2;
@@ -66,8 +65,6 @@ class Koordinat {
         this.absis = -a.absis;
         this.ordinat = a.ordinat;
     }
-
-    // --- FUNGSI RETURN ---
 
     public Koordinat titikTengah (Koordinat b) {
         Koordinat temp = new Koordinat(0, 0);
@@ -85,12 +82,22 @@ class Koordinat {
 
     public Koordinat cerminY () {
         Koordinat temp = new Koordinat();
-        temp.absis = -this.absis;
+        temp.absis = -this.absis; 
         temp.ordinat = this.ordinat;
         return temp;
     }
 
-    // --- FUNGSI CETAK ---
+    public double jarak (Koordinat a , Koordinat b) {
+        double jarak = Math.sqrt((b.absis - a.absis)*(b.absis - a.absis) + (b.ordinat - a.ordinat)*(b.ordinat - a.ordinat));
+
+        return jarak;
+    }
+
+    public void jarak (Koordinat a) {
+        double jarak = Math.sqrt((this.absis - a.absis) * (this.absis - a.absis)) + ((this.ordinat - a.absis) * (this.ordinat - a.ordinat));
+        
+        System.out.println("JARAK ANTARA A DAN B = " + jarak);
+    }
 
     public void cetakVoid (Koordinat a , Koordinat b , Koordinat c , Koordinat d , Koordinat e) {
         System.out.println("HASIL AKHIR : (VOID)" );
@@ -99,6 +106,7 @@ class Koordinat {
         System.out.println("TITIK TENGAH = (" + c.getAbsis() +"," + c.getOrdinat() + ")");
         System.out.println("CERMIN TERHADAP X = (" + d.getAbsis() +"," + d.getOrdinat() + ")");
         System.out.println("CERMIN TERHADAP Y = (" + e.getAbsis() +"," + e.getOrdinat() + ")");
+        b.jarak(a);
     }
 
     public void cetakReturn (Koordinat a , Koordinat b , Koordinat c , Koordinat d , Koordinat e) {
@@ -108,11 +116,12 @@ class Koordinat {
         System.out.println("TITIK TENGAH = (" + c.getAbsis() +"," + c.getOrdinat() + ")");
         System.out.println("CERMIN TERHADAP X = (" + d.getAbsis() +"," + d.getOrdinat() + ")");
         System.out.println("CERMIN TERHADAP Y = (" + e.getAbsis() +"," + e.getOrdinat() + ")");
+        System.out.println("JARAK ANTARA A DAN B = " + jarak(a , b));
     }
+}
 
-    // --- MAIN METHOD DENGAN MENU ---
     public class nomor1_063_078_090{
-    public static void main(String[] args) {
+        public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Koordinat printer = new Koordinat();
         boolean menuUtamaAktif = true;
@@ -128,7 +137,6 @@ class Koordinat {
             int pilihanUtama = scanner.nextInt();
 
             if (pilihanUtama == 1) {
-                // --- SUB MENU VOID ---
                 boolean subMenuVoidAktif = true;
                 while (subMenuVoidAktif) {
                     System.out.println("\n--- SUB MENU: UJI VOID ---");
@@ -204,7 +212,6 @@ class Koordinat {
                 }
 
             } else if (pilihanUtama == 2) {
-                // --- SUB MENU RETURN ---
                 boolean subMenuReturnAktif = true;
                 while (subMenuReturnAktif) {
                     System.out.println("\n--- SUB MENU: UJI RETURN ---");
@@ -278,5 +285,4 @@ class Koordinat {
             }
         }
     }
-  }
-}
+    }

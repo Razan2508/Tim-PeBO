@@ -8,6 +8,7 @@ Deskripsi     : Mnecari titik tengah , cermin terhadap x , dan cermin terhadap y
 */
 
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -17,13 +18,11 @@ private:
     double ordinat;
 
 public:
-    // Constructor dengan parameter
     Koordinat(double absis, double ordinat) {
         this->absis = absis;
         this->ordinat = ordinat;
     }
 
-    // Default Constructor
     Koordinat() {
         this->absis = 0.0;
         this->ordinat = 0.0;
@@ -55,7 +54,6 @@ public:
         setOrdinat(ordinat);
     }
 
-    // --- FUNGSI VOID ---
     void titikTengah(Koordinat a, Koordinat b) {
         this->absis = (a.absis + b.absis) / 2;
         this->ordinat = (a.ordinat + b.ordinat) / 2;
@@ -71,7 +69,6 @@ public:
         this->ordinat = a.ordinat;
     }
 
-    // --- FUNGSI RETURN ---
     Koordinat titikTengah(Koordinat b) {
         Koordinat temp(0, 0);
         temp.absis = (this->absis + b.absis) / 2;
@@ -93,7 +90,17 @@ public:
         return temp;
     }
 
-    // --- FUNGSI CETAK ---
+    double jarak (Koordinat a, Koordinat b) {
+        double jarak = sqrt((b.absis - a.absis)*(b.absis - a.absis)) + ((b.ordinat - a.ordinat)*(b.ordinat - a.ordinat));
+        return jarak;
+    }
+
+    void jarak (Koordinat a) {
+        double jarak = sqrt((this->absis - a.absis) * (this->absis - a.absis) + (this->ordinat - a.ordinat)*(this->ordinat - a.ordinat));
+
+        cout<<"JARAK ANTARA A DAN B = " << jarak <<endl;
+    }
+
     void cetakVoid(Koordinat a, Koordinat b, Koordinat c, Koordinat d, Koordinat e) {
         cout << "HASIL AKHIR : (VOID)\n";
         cout << "TITIK A = (" << a.getAbsis() << "," << a.getOrdinat() << ")\n";
@@ -101,6 +108,7 @@ public:
         cout << "TITIK TENGAH = (" << c.getAbsis() << "," << c.getOrdinat() << ")\n";
         cout << "CERMIN TERHADAP X = (" << d.getAbsis() << "," << d.getOrdinat() << ")\n";
         cout << "CERMIN TERHADAP Y = (" << e.getAbsis() << "," << e.getOrdinat() << ")\n";
+        b.jarak(a);
     }
 
     void cetakReturn(Koordinat a, Koordinat b, Koordinat c, Koordinat d, Koordinat e) {
@@ -110,6 +118,7 @@ public:
         cout << "TITIK TENGAH = (" << c.getAbsis() << "," << c.getOrdinat() << ")\n";
         cout << "CERMIN TERHADAP X = (" << d.getAbsis() << "," << d.getOrdinat() << ")\n";
         cout << "CERMIN TERHADAP Y = (" << e.getAbsis() << "," << e.getOrdinat() << ")\n";
+        cout<<"JARAK ANTARA A DAN B = " << jarak(a , b) << endl;
     }
 };
 
