@@ -91,7 +91,7 @@ public:
     }
 
     double jarak (Koordinat a, Koordinat b) {
-        double jarak = sqrt((b.absis - a.absis)*(b.absis - a.absis)) + ((b.ordinat - a.ordinat)*(b.ordinat - a.ordinat));
+        double jarak = sqrt(((b.absis - a.absis)*(b.absis - a.absis)) + ((b.ordinat - a.ordinat)*(b.ordinat - a.ordinat)));
         return jarak;
     }
 

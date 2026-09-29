@@ -94,7 +94,7 @@ class Koordinat {
     }
 
     public void jarak (Koordinat a) {
-        double jarak = Math.sqrt((this.absis - a.absis) * (this.absis - a.absis)) + ((this.ordinat - a.absis) * (this.ordinat - a.ordinat));
+        double jarak = Math.sqrt(((this.absis - a.absis) * (this.absis - a.absis)) + ((this.ordinat - a.ordinat) * (this.ordinat - a.ordinat)));
         
         System.out.println("JARAK ANTARA A DAN B = " + jarak);
     }

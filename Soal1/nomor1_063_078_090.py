@@ -62,12 +62,12 @@ class Koordinat:
         temp.ordinat = self.ordinat
         return temp
 
-    def jarak (self , a , b):
+    def jarakReturn (self , a , b):
         jarak = math.sqrt(((b.absis - a.absis)**2) + ((b.ordinat - a.ordinat)**2))
 
         return jarak
 
-    def jarak (self , a):
+    def jarakVoid (self , a):
         jarak = math.sqrt(((self.absis - a.absis)**2) + ((self.ordinat - a.ordinat)**2))
 
         print("JARAK ANTARA A DAN B = " , jarak)
@@ -79,7 +79,7 @@ class Koordinat:
         print(f"TITIK TENGAH = ({c.getAbsis()},{c.getOrdinat()})")
         print(f"CERMIN TERHADAP X = ({d.getAbsis()},{d.getOrdinat()})")
         print(f"CERMIN TERHADAP Y = ({e.getAbsis()},{e.getOrdinat()})")
-        b.jarak(a)
+        b.jarakVoid(a)
 
     def cetakReturn(self, a, b, c, d, e):
         print("HASIL AKHIR : (RETURN)")
@@ -88,7 +88,7 @@ class Koordinat:
         print(f"TITIK TENGAH = ({c.getAbsis()},{c.getOrdinat()})")
         print(f"CERMIN TERHADAP X = ({d.getAbsis()},{d.getOrdinat()})")
         print(f"CERMIN TERHADAP Y = ({e.getAbsis()},{e.getOrdinat()})")
-        print("JARAK ANTARA A DAN B = " , self.jarak(a,b))
+        print("JARAK ANTARA A DAN B = " , self.jarakReturn(a,b))
 
 if __name__ == "__main__":
     printer = Koordinat()
