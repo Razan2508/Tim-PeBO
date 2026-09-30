@@ -1,18 +1,38 @@
+/*
+Nama Program  : Selisih Waktu
+Nama Kelompok : Tim PeBO
+Nama Anggota  : Razan Ibrahim Nabil , DJEREMY RIELDY MARCHIANO PANJAITAN , MUHAMMAD IRSYAD AZHARUL HAQ
+NPM  Anggota  : 140810250090 , 140810250063 , 140810250078
+Tanggal Buat  : 16/09/2026
+Deskripsi     : Mencari selisih waktu berdasarkan input jam , menit , detik
+*/
 import java.util.Scanner;
 
 class Waktu {
     private int jam, menit, detik;
 
-    // Constructor
-    Waktu() { }
-    Waktu(int jam, int menit, int detik) { setWaktu(jam, menit, detik); }
+    Waktu() { 
+        this.jam = 0;
+        this.menit = 0;
+        this.detik = 0;
+    }
+    
+    Waktu(int jam, int menit, int detik) { 
+        this.jam = jam;
+        this.menit = menit;
+        this.detik = detik;
+    }
 
-    // Setter: menolak nilai di luar rentang waktu
-    boolean setWaktu(int jam, int menit, int detik) {
-        if (jam < 0 || jam > 23 || menit < 0 || menit > 59 || detik < 0 || detik > 59)
-            return false;
-        this.jam = jam; this.menit = menit; this.detik = detik;
-        return true;
+    void setJam(int jam) {
+        this.jam = jam;
+    }
+    
+    void setMenit(int menit) {
+        this.menit = menit;
+    }
+    
+    void setDetik(int detik) {
+        this.detik = detik;
     }
 
     // Baca angka dengan validasi rentang (diulang sampai valid)
@@ -29,49 +49,58 @@ class Waktu {
         }
     }
 
-    // Getter
-    int getJam() { return jam; }
-    int getMenit() { return menit; }
-    int getDetik() { return detik; }
+    int getJam() { 
+        return this.jam; 
+    }
+    int getMenit() { 
+        return this.menit; 
+    }
+    int getDetik() { 
+        return this.detik; 
+    }
 
-    // Input (dalam class): baca di dalam class, isi lewat setter
     void inputDalam(Scanner sc) {
-        int j = Waktu.bacaAngka(sc, "Jam  ", 0, 23);
-        int m = Waktu.bacaAngka(sc, "Menit", 0, 59);
-        int d = Waktu.bacaAngka(sc, "Detik", 0, 59);
-        setWaktu(j, m, d);
+        int jam = Waktu.bacaAngka(sc, "Jam  ", 0, 23);
+        int menit = Waktu.bacaAngka(sc, "Menit", 0, 59);
+        int detik = Waktu.bacaAngka(sc, "Detik", 0, 59);
+        
+        this.setJam(jam);
+        this.setMenit(menit);
+        this.setDetik(detik);
     }
 
-    // Output (dalam class)
     void outputDalam() {
-        System.out.printf("%02d:%02d:%02d%n", jam, menit, detik);
+        System.out.printf("%02d:%02d:%02d%n", this.jam, this.menit, this.detik);
     }
 
-    private int keDetik() { return jam * 3600 + menit * 60 + detik; }
+    private int keDetik() { 
+        return this.jam * 3600 + this.menit * 60 + this.detik; 
+    }
 
-    // Proses cara 1: fungsi return
     Waktu selisihReturn(Waktu w) {
-        int s = Math.abs(keDetik() - w.keDetik());
+        int s = Math.abs(this.keDetik() - w.keDetik());
         return new Waktu(s / 3600, (s % 3600) / 60, s % 60);
     }
 
-    // Proses cara 2: void (hasil disimpan di objek ini)
     void selisihVoid(Waktu w1, Waktu w2) {
         int s = Math.abs(w1.keDetik() - w2.keDetik());
-        setWaktu(s / 3600, (s % 3600) / 60, s % 60);
+        this.setJam(s / 3600);
+        this.setMenit((s % 3600) / 60);
+        this.setDetik(s % 60);
     }
 }
 
-public class Main {
-    // Input luar class: baca di luar class (Scanner di main), isi lewat setter
+public class Nomor2_063_078_090 {
     static void inputLuar(Waktu w, Scanner sc) {
-        int j = Waktu.bacaAngka(sc, "Jam  ", 0, 23);
-        int m = Waktu.bacaAngka(sc, "Menit", 0, 59);
-        int d = Waktu.bacaAngka(sc, "Detik", 0, 59);
-        w.setWaktu(j, m, d);
+        int jam = Waktu.bacaAngka(sc, "Jam  ", 0, 23);
+        int menit = Waktu.bacaAngka(sc, "Menit", 0, 59);
+        int detik = Waktu.bacaAngka(sc, "Detik", 0, 59);
+        
+        w.setJam(jam);
+        w.setMenit(menit);
+        w.setDetik(detik);
     }
 
-    // Output luar class
     static void outputLuar(Waktu w) {
         System.out.printf("%02d:%02d:%02d%n", w.getJam(), w.getMenit(), w.getDetik());
     }

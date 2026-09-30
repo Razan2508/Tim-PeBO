@@ -1,7 +1,17 @@
+/*
+Nama Program  : Selisih Waktu
+Nama Kelompok : Tim PeBO
+Nama Anggota  : Razan Ibrahim Nabil , DJEREMY RIELDY MARCHIANO PANJAITAN , MUHAMMAD IRSYAD AZHARUL HAQ
+NPM  Anggota  : 140810250090 , 140810250063 , 140810250078
+Tanggal Buat  : 16/09/2026
+Deskripsi     : Mencari selisih waktu berdasarkan input jam , menit , detik
+*/
+
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
 #include <string>
+#include <cmath>
 using namespace std;
 
 // Baca angka dengan validasi rentang (diulang sampai valid)
@@ -19,63 +29,84 @@ int bacaAngka(const string &label, int lo, int hi) {
 class Waktu {
 private:
     int jam, menit, detik;
-    int keDetik() const { return jam * 3600 + menit * 60 + detik; }
+    
+    int keDetik() const { 
+        return this->jam * 3600 + this->menit * 60 + this->detik; 
+    }
 
 public:
-    // Constructor
-    Waktu() : jam(0), menit(0), detik(0) {}
-    Waktu(int j, int m, int d) : jam(0), menit(0), detik(0) { setWaktu(j, m, d); }
-
-    // Setter: menolak nilai di luar rentang
-    bool setWaktu(int j, int m, int d) {
-        if (j < 0 || j > 23 || m < 0 || m > 59 || d < 0 || d > 59) return false;
-        jam = j; menit = m; detik = d;
-        return true;
+    Waktu() {
+        this->jam = 0;
+        this->menit = 0;
+        this->detik = 0;
+    }
+    
+    Waktu(int jam, int menit, int detik) { 
+        this->jam = jam;
+        this->menit = menit;
+        this->detik = detik;
     }
 
-    // Getter
-    int getJam() const { return jam; }
-    int getMenit() const { return menit; }
-    int getDetik() const { return detik; }
+    void setJam(int jam) {
+        this->jam = jam;
+    }
+    
+    void setMenit(int menit) {
+        this->menit = menit;
+    }
+    
+    void setDetik(int detik) {
+        this->detik = detik;
+    }
 
-    // Input (dalam class): baca di dalam class, isi lewat setter
+    int getJam() const { 
+        return this->jam; 
+    }
+    int getMenit() const { 
+        return this->menit; 
+    }
+    int getDetik() const { return this->detik; }
+
     void inputDalam() {
-        int j, m, d;
-        j = bacaAngka("Jam  ", 0, 23);
-        m = bacaAngka("Menit", 0, 59);
-        d = bacaAngka("Detik", 0, 59);
-        setWaktu(j, m, d);
+        int jam, menit, detik;
+        jam = bacaAngka("Jam  ", 0, 23);
+        menit = bacaAngka("Menit", 0, 59);
+        detik = bacaAngka("Detik", 0, 59);
+        
+        this->setJam(jam);
+        this->setMenit(menit);
+        this->setDetik(detik);
     }
 
-    // Output (dalam class)
     void outputDalam() const {
-        cout << setfill('0') << setw(2) << jam << ":"
-             << setw(2) << menit << ":" << setw(2) << detik << endl;
+        cout << setfill('0') << setw(2) << this->jam << ":"
+             << setw(2) << this->menit << ":" << setw(2) << this->detik << endl;
     }
 
-    // Proses cara 1: fungsi return
     Waktu selisihReturn(const Waktu &w) const {
-        int s = abs(keDetik() - w.keDetik());
+        int s = abs(this->keDetik() - w.keDetik());
         return Waktu(s / 3600, (s % 3600) / 60, s % 60);
     }
 
-    // Proses cara 2: void (hasil disimpan di objek ini)
     void selisihVoid(const Waktu &w1, const Waktu &w2) {
         int s = abs(w1.keDetik() - w2.keDetik());
-        setWaktu(s / 3600, (s % 3600) / 60, s % 60);
+        this->setJam(s / 3600);
+        this->setMenit((s % 3600) / 60);
+        this->setDetik(s % 60);
     }
 };
 
-// Input luar class: baca di luar class, isi lewat setter
 void inputLuar(Waktu &w) {
-    int j, m, d;
-    j = bacaAngka("Jam  ", 0, 23);
-    m = bacaAngka("Menit", 0, 59);
-    d = bacaAngka("Detik", 0, 59);
-    w.setWaktu(j, m, d);
+    int jam, menit, detik;
+    jam = bacaAngka("Jam  ", 0, 23);
+    menit = bacaAngka("Menit", 0, 59);
+    detik = bacaAngka("Detik", 0, 59);
+    
+    w.setJam(jam);
+    w.setMenit(menit);
+    w.setDetik(detik);
 }
 
-// Output luar class
 void outputLuar(const Waktu &w) {
     cout << setfill('0') << setw(2) << w.getJam() << ":"
          << setw(2) << w.getMenit() << ":" << setw(2) << w.getDetik() << endl;

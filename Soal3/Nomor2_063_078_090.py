@@ -1,3 +1,12 @@
+'''
+Nama Program  : Selisih Waktu
+Nama Kelompok : Tim PeBO
+Nama Anggota  : Razan Ibrahim Nabil , DJEREMY RIELDY MARCHIANO PANJAITAN , MUHAMMAD IRSYAD AZHARUL HAQ
+NPM  Anggota  : 140810250090 , 140810250063 , 140810250078
+Tanggal Buat  : 16/09/2026
+Deskripsi     : Mencari selisih waktu berdasarkan input jam , menit , detik
+'''
+
 def baca_angka(label, lo, hi):
     # Baca angka dengan validasi rentang (diulang sampai valid)
     while True:
@@ -11,56 +20,67 @@ def baca_angka(label, lo, hi):
 
 
 class Waktu:
-    # Constructor
     def __init__(self, jam=0, menit=0, detik=0):
-        self.jam = 0
-        self.menit = 0
-        self.detik = 0
-        self.set_waktu(jam, menit, detik)
+        self.jam = jam
+        self.menit = menit
+        self.detik = detik
 
-    # Setter: menolak nilai di luar rentang (jam 0-23, menit 0-59, detik 0-59)
-    def set_waktu(self, jam, menit, detik):
-        if not (0 <= jam <= 23 and 0 <= menit <= 59 and 0 <= detik <= 59):
-            return False
-        self.jam, self.menit, self.detik = jam, menit, detik
-        return True
+    def setJam(self, jam):
+        self.jam = jam
+        
+    def setMenit(self, menit):
+        self.menit = menit
+        
+    def setDetik(self, detik):
+        self.detik = detik
 
-    # Input (dalam class): baca di dalam class, isi lewat setter
+    def getJam(self):
+        return self.jam
+        
+    def getMenit(self):
+        return self.menit
+        
+    def getDetik(self):
+        return self.detik
+
     def input_dalam(self):
-        j = baca_angka("Jam  ", 0, 23)
-        m = baca_angka("Menit", 0, 59)
-        d = baca_angka("Detik", 0, 59)
-        self.set_waktu(j, m, d)
+        jam = baca_angka("Jam  ", 0, 23)
+        menit = baca_angka("Menit", 0, 59)
+        detik = baca_angka("Detik", 0, 59)
+        
+        self.setJam(jam)
+        self.setMenit(menit)
+        self.setDetik(detik)
 
-    # Output (dalam class)
     def output_dalam(self):
         print(f"{self.jam:02d}:{self.menit:02d}:{self.detik:02d}")
 
     def ke_detik(self):
         return self.jam * 3600 + self.menit * 60 + self.detik
 
-    # Proses cara 1: fungsi return
     def selisih_return(self, w):
         s = abs(self.ke_detik() - w.ke_detik())
         return Waktu(s // 3600, (s % 3600) // 60, s % 60)
 
-    # Proses cara 2: void (hasil disimpan di objek ini)
     def selisih_void(self, w1, w2):
         s = abs(w1.ke_detik() - w2.ke_detik())
-        self.set_waktu(s // 3600, (s % 3600) // 60, s % 60)
+        self.setJam(s // 3600)
+        self.setMenit((s % 3600) // 60)
+        self.setDetik(s % 60)
 
 
-# Input luar class: baca di luar class (input di fungsi), isi lewat setter
 def input_luar(w):
-    j = baca_angka("Jam  ", 0, 23)
-    m = baca_angka("Menit", 0, 59)
-    d = baca_angka("Detik", 0, 59)
-    w.set_waktu(j, m, d)
+    jam = baca_angka("Jam  ", 0, 23)
+    menit = baca_angka("Menit", 0, 59)
+    detik = baca_angka("Detik", 0, 59)
+    
+    w.setJam(jam)
+    w.setMenit(menit)
+    w.setDetik(detik)
 
 
-# Output luar class
 def output_luar(w):
-    print(f"{w.jam:02d}:{w.menit:02d}:{w.detik:02d}")
+    print(f"{w.getJam():02d}:{w.getMenit():02d}:{w.getDetik():02d}")
 
 
 def uji(mode_void, objek):
