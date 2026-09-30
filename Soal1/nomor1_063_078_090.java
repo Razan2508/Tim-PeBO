@@ -87,36 +87,36 @@ class Koordinat {
         return temp;
     }
 
-    public double jarak (Koordinat a , Koordinat b) {
-        double jarak = Math.sqrt((b.absis - a.absis)*(b.absis - a.absis) + (b.ordinat - a.ordinat)*(b.ordinat - a.ordinat));
+    public double jarakReturn (Koordinat a) {
+        double jarak = Math.sqrt((this.absis - a.absis)*(this.absis - a.absis) + (this.ordinat - a.ordinat)*(this.ordinat - a.ordinat));
 
         return jarak;
     }
 
-    public void jarak (Koordinat a) {
+    public void jarakVoid (Koordinat a) {
         double jarak = Math.sqrt(((this.absis - a.absis) * (this.absis - a.absis)) + ((this.ordinat - a.ordinat) * (this.ordinat - a.ordinat)));
         
         System.out.println("JARAK ANTARA A DAN B = " + jarak);
     }
 
     public void cetakVoid (Koordinat a , Koordinat b , Koordinat c , Koordinat d , Koordinat e) {
-        System.out.println("HASIL AKHIR : (VOID)" );
+        System.out.println("HASIL AKHIR : (VOID) (OUTPUT DALAM)" );
         System.out.println("TITIK A = (" + a.getAbsis() +"," + a.getOrdinat() + ")");
         System.out.println("TITIK B = (" + b.getAbsis() +"," + b.getOrdinat() + ")");
         System.out.println("TITIK TENGAH = (" + c.getAbsis() +"," + c.getOrdinat() + ")");
         System.out.println("CERMIN TERHADAP X = (" + d.getAbsis() +"," + d.getOrdinat() + ")");
         System.out.println("CERMIN TERHADAP Y = (" + e.getAbsis() +"," + e.getOrdinat() + ")");
-        b.jarak(a);
+        b.jarakVoid(a);
     }
 
     public void cetakReturn (Koordinat a , Koordinat b , Koordinat c , Koordinat d , Koordinat e) {
-        System.out.println("HASIL AKHIR : (RETURN)" );
+        System.out.println("HASIL AKHIR : (RETURN) (OUTPUT DALAM)" );
         System.out.println("TITIK A = (" + a.getAbsis() +"," + a.getOrdinat() + ")");
         System.out.println("TITIK B = (" + b.getAbsis() +"," + b.getOrdinat() + ")");
         System.out.println("TITIK TENGAH = (" + c.getAbsis() +"," + c.getOrdinat() + ")");
         System.out.println("CERMIN TERHADAP X = (" + d.getAbsis() +"," + d.getOrdinat() + ")");
         System.out.println("CERMIN TERHADAP Y = (" + e.getAbsis() +"," + e.getOrdinat() + ")");
-        System.out.println("JARAK ANTARA A DAN B = " + jarak(a , b));
+        System.out.println("JARAK ANTARA A DAN B = " + b.jarakReturn(a));
     }
 }
 
@@ -166,6 +166,16 @@ class Koordinat {
                             cy1.cerminY(a1); 
 
                             printer.cetakVoid(a1, b1, tengah1, cx1, cy1);
+
+                            System.out.println("");
+                            System.out.println("HASIL AKHIR : (VOID) (OUTPUT LUAR)" );
+                            System.out.println("TITIK A = (" + a1.getAbsis() +"," + a1.getOrdinat() + ")");
+                            System.out.println("TITIK B = (" + b1.getAbsis() +"," + b1.getOrdinat() + ")");
+                            System.out.println("TITIK TENGAH = (" + tengah1.getAbsis() +"," + tengah1.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP X = (" + cx1.getAbsis() +"," + cx1.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP Y = (" + cy1.getAbsis() +"," + cy1.getOrdinat() + ")");
+                            b1.jarakVoid(a1);
+
                             break;
 
                         case 2:
@@ -186,6 +196,16 @@ class Koordinat {
                             cy2.cerminY(a2);
 
                             printer.cetakVoid(a2, b2, tengah2, cx2, cy2);
+
+                            System.out.println("");
+                            System.out.println("HASIL AKHIR : (VOID) (OUTPUT LUAR)" );
+                            System.out.println("TITIK A = (" + a2.getAbsis() +"," + a2.getOrdinat() + ")");
+                            System.out.println("TITIK B = (" + b2.getAbsis() +"," + b2.getOrdinat() + ")");
+                            System.out.println("TITIK TENGAH = (" + tengah2.getAbsis() +"," + tengah2.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP X = (" + cx2.getAbsis() +"," + cx2.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP Y = (" + cy2.getAbsis() +"," + cy2.getOrdinat() + ")");
+                            b2.jarakVoid(a2);
+
                             break;
 
                         case 3:
@@ -201,6 +221,16 @@ class Koordinat {
                             cy3.cerminY(a3);
 
                             printer.cetakVoid(a3, b3, tengah3, cx3, cy3);
+
+                            System.out.println("");
+                            System.out.println("HASIL AKHIR : (VOID) (OUTPUT LUAR)" );
+                            System.out.println("TITIK A = (" + a3.getAbsis() +"," + a3.getOrdinat() + ")");
+                            System.out.println("TITIK B = (" + b3.getAbsis() +"," + b3.getOrdinat() + ")");
+                            System.out.println("TITIK TENGAH = (" + tengah3.getAbsis() +"," + tengah3.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP X = (" + cx3.getAbsis() +"," + cx3.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP Y = (" + cy3.getAbsis() +"," + cy3.getOrdinat() + ")");
+                            b3.jarakVoid(a3);
+
                             break;
 
                         case 4:
@@ -238,6 +268,16 @@ class Koordinat {
                             Koordinat cy1 = a1.cerminY();
 
                             printer.cetakReturn(a1, b1, tengah1, cx1, cy1);
+
+                            System.out.println("");
+                            System.out.println("HASIL AKHIR : (RETURN) (OUTPUT LUAR)" );
+                            System.out.println("TITIK A = (" + a1.getAbsis() +"," + a1.getOrdinat() + ")");
+                            System.out.println("TITIK B = (" + b1.getAbsis() +"," + b1.getOrdinat() + ")");
+                            System.out.println("TITIK TENGAH = (" + tengah1.getAbsis() +"," + tengah1.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP X = (" + cx1.getAbsis() +"," + cx1.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP Y = (" + cy1.getAbsis() +"," + cy1.getOrdinat() + ")");
+                            System.out.println("JARAK ANTARA A DAN B = " + b1.jarakReturn(a1));
+
                             break;
 
                         case 2:
@@ -255,6 +295,16 @@ class Koordinat {
                             Koordinat cy2 = a2.cerminY();
 
                             printer.cetakReturn(a2, b2, tengah2, cx2, cy2);
+
+                            System.out.println("");
+                            System.out.println("HASIL AKHIR : (RETURN) (OUTPUT LUAR)" );
+                            System.out.println("TITIK A = (" + a2.getAbsis() +"," + a2.getOrdinat() + ")");
+                            System.out.println("TITIK B = (" + b2.getAbsis() +"," + b2.getOrdinat() + ")");
+                            System.out.println("TITIK TENGAH = (" + tengah2.getAbsis() +"," + tengah2.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP X = (" + cx2.getAbsis() +"," + cx2.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP Y = (" + cy2.getAbsis() +"," + cy2.getOrdinat() + ")");
+                            System.out.println("JARAK ANTARA A DAN B = " + b2.jarakReturn(a2));
+
                             break;
 
                         case 3:
@@ -267,6 +317,16 @@ class Koordinat {
                             Koordinat cy3 = a3.cerminY();
 
                             printer.cetakReturn(a3, b3, tengah3, cx3, cy3);
+
+                            System.out.println("");
+                            System.out.println("HASIL AKHIR : (RETURN) (OUTPUT LUAR)" );
+                            System.out.println("TITIK A = (" + a3.getAbsis() +"," + a3.getOrdinat() + ")");
+                            System.out.println("TITIK B = (" + b3.getAbsis() +"," + b3.getOrdinat() + ")");
+                            System.out.println("TITIK TENGAH = (" + tengah3.getAbsis() +"," + tengah3.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP X = (" + cx3.getAbsis() +"," + cx3.getOrdinat() + ")");
+                            System.out.println("CERMIN TERHADAP Y = (" + cy3.getAbsis() +"," + cy3.getOrdinat() + ")");
+                            System.out.println("JARAK ANTARA A DAN B = " + b3.jarakReturn(a3));
+
                             break;
 
                         case 4:

@@ -90,35 +90,35 @@ public:
         return temp;
     }
 
-    double jarak (Koordinat a, Koordinat b) {
-        double jarak = sqrt(((b.absis - a.absis)*(b.absis - a.absis)) + ((b.ordinat - a.ordinat)*(b.ordinat - a.ordinat)));
+    double jarakReturn (Koordinat a) {
+        double jarak = sqrt(((this->absis - a.absis)*(this->absis - a.absis)) + ((this->ordinat - a.ordinat)*(this->ordinat - a.ordinat)));
         return jarak;
     }
 
-    void jarak (Koordinat a) {
+    void jarakVoid (Koordinat a) {
         double jarak = sqrt((this->absis - a.absis) * (this->absis - a.absis) + (this->ordinat - a.ordinat)*(this->ordinat - a.ordinat));
 
         cout<<"JARAK ANTARA A DAN B = " << jarak <<endl;
     }
 
     void cetakVoid(Koordinat a, Koordinat b, Koordinat c, Koordinat d, Koordinat e) {
-        cout << "HASIL AKHIR : (VOID)\n";
+        cout << "HASIL AKHIR : (VOID) (OUTPUT DALAM)\n";
         cout << "TITIK A = (" << a.getAbsis() << "," << a.getOrdinat() << ")\n";
         cout << "TITIK B = (" << b.getAbsis() << "," << b.getOrdinat() << ")\n";
         cout << "TITIK TENGAH = (" << c.getAbsis() << "," << c.getOrdinat() << ")\n";
         cout << "CERMIN TERHADAP X = (" << d.getAbsis() << "," << d.getOrdinat() << ")\n";
         cout << "CERMIN TERHADAP Y = (" << e.getAbsis() << "," << e.getOrdinat() << ")\n";
-        b.jarak(a);
+        b.jarakVoid(a);
     }
 
     void cetakReturn(Koordinat a, Koordinat b, Koordinat c, Koordinat d, Koordinat e) {
-        cout << "HASIL AKHIR : (RETURN)\n";
+        cout << "HASIL AKHIR : (RETURN) (OUTPUT DALAM)\n";
         cout << "TITIK A = (" << a.getAbsis() << "," << a.getOrdinat() << ")\n";
         cout << "TITIK B = (" << b.getAbsis() << "," << b.getOrdinat() << ")\n";
         cout << "TITIK TENGAH = (" << c.getAbsis() << "," << c.getOrdinat() << ")\n";
         cout << "CERMIN TERHADAP X = (" << d.getAbsis() << "," << d.getOrdinat() << ")\n";
         cout << "CERMIN TERHADAP Y = (" << e.getAbsis() << "," << e.getOrdinat() << ")\n";
-        cout<<"JARAK ANTARA A DAN B = " << jarak(a , b) << endl;
+        cout<<"JARAK ANTARA A DAN B = " << b.jarakReturn(a) << endl;
     }
 };
 
@@ -160,6 +160,16 @@ int main() {
                         cx1.cerminX(a1); 
                         cy1.cerminY(a1); 
                         printer.cetakVoid(a1, b1, tengah1, cx1, cy1);
+
+                        cout<<endl;
+                        cout << "HASIL AKHIR : (VOID) (OUTPUT LUAR)\n";
+                        cout << "TITIK A = (" << a1.getAbsis() << "," << a1.getOrdinat() << ")\n";
+                        cout << "TITIK B = (" << b1.getAbsis() << "," << b1.getOrdinat() << ")\n";
+                        cout << "TITIK TENGAH = (" << tengah1.getAbsis() << "," << tengah1.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP X = (" << cx1.getAbsis() << "," << cx1.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP Y = (" << cy1.getAbsis() << "," << cy1.getOrdinat() << ")\n";
+                        b1.jarakVoid(a1);
+
                         break;
                     }
                     case 2: {
@@ -174,6 +184,15 @@ int main() {
                         cx2.cerminX(a2);
                         cy2.cerminY(a2);
                         printer.cetakVoid(a2, b2, tengah2, cx2, cy2);
+
+                        cout<<endl;
+                        cout << "HASIL AKHIR : (VOID) (OUTPUT LUAR)\n";
+                        cout << "TITIK A = (" << a2.getAbsis() << "," << a2.getOrdinat() << ")\n";
+                        cout << "TITIK B = (" << b2.getAbsis() << "," << b2.getOrdinat() << ")\n";
+                        cout << "TITIK TENGAH = (" << tengah2.getAbsis() << "," << tengah2.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP X = (" << cx2.getAbsis() << "," << cx2.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP Y = (" << cy2.getAbsis() << "," << cy2.getOrdinat() << ")\n";
+                        b2.jarakVoid(a2);
                         break;
                     }
                     case 3: {
@@ -186,6 +205,15 @@ int main() {
                         cx3.cerminX(a3);
                         cy3.cerminY(a3);
                         printer.cetakVoid(a3, b3, tengah3, cx3, cy3);
+
+                        cout<<endl;
+                        cout << "HASIL AKHIR : (VOID) (OUTPUT LUAR)\n";
+                        cout << "TITIK A = (" << a3.getAbsis() << "," << a3.getOrdinat() << ")\n";
+                        cout << "TITIK B = (" << b3.getAbsis() << "," << b3.getOrdinat() << ")\n";
+                        cout << "TITIK TENGAH = (" << tengah3.getAbsis() << "," << tengah3.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP X = (" << cx3.getAbsis() << "," << cx3.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP Y = (" << cy3.getAbsis() << "," << cy3.getOrdinat() << ")\n";
+                        b3.jarakVoid(a3);
                         break;
                     }
                     case 4:
@@ -218,6 +246,15 @@ int main() {
                         Koordinat cx1 = a1.cerminX();
                         Koordinat cy1 = a1.cerminY();
                         printer.cetakReturn(a1, b1, tengah1, cx1, cy1);
+
+                        cout<<endl;
+                        cout << "HASIL AKHIR : (RETURN) (OUTPUT LUAR)\n";
+                        cout << "TITIK A = (" << a1.getAbsis() << "," << a1.getOrdinat() << ")\n";
+                        cout << "TITIK B = (" << b1.getAbsis() << "," << b1.getOrdinat() << ")\n";
+                        cout << "TITIK TENGAH = (" << tengah1.getAbsis() << "," << tengah1.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP X = (" << cx1.getAbsis() << "," << cx1.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP Y = (" << cy1.getAbsis() << "," << cy1.getOrdinat() << ")\n";
+                        cout<<"JARAK ANTARA A DAN B = " << b1.jarakReturn(a1) << endl;
                         break;
                     }
                     case 2: {
@@ -232,6 +269,15 @@ int main() {
                         Koordinat cx2 = a2.cerminX();
                         Koordinat cy2 = a2.cerminY();
                         printer.cetakReturn(a2, b2, tengah2, cx2, cy2);
+
+                        cout<<endl;
+                        cout << "HASIL AKHIR : (RETURN) (OUTPUT LUAR)\n";
+                        cout << "TITIK A = (" << a2.getAbsis() << "," << a2.getOrdinat() << ")\n";
+                        cout << "TITIK B = (" << b2.getAbsis() << "," << b2.getOrdinat() << ")\n";
+                        cout << "TITIK TENGAH = (" << tengah2.getAbsis() << "," << tengah2.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP X = (" << cx2.getAbsis() << "," << cx2.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP Y = (" << cy2.getAbsis() << "," << cy2.getOrdinat() << ")\n";
+                        cout<<"JARAK ANTARA A DAN B = " << b2.jarakReturn(a2) << endl;
                         break;
                     }
                     case 3: {
@@ -243,6 +289,15 @@ int main() {
                         Koordinat cx3 = a3.cerminX();
                         Koordinat cy3 = a3.cerminY();
                         printer.cetakReturn(a3, b3, tengah3, cx3, cy3);
+
+                        cout<<endl;
+                        cout << "HASIL AKHIR : (RETURN) (OUTPUT LUAR)\n";
+                        cout << "TITIK A = (" << a3.getAbsis() << "," << a3.getOrdinat() << ")\n";
+                        cout << "TITIK B = (" << b3.getAbsis() << "," << b3.getOrdinat() << ")\n";
+                        cout << "TITIK TENGAH = (" << tengah3.getAbsis() << "," << tengah3.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP X = (" << cx3.getAbsis() << "," << cx3.getOrdinat() << ")\n";
+                        cout << "CERMIN TERHADAP Y = (" << cy3.getAbsis() << "," << cy3.getOrdinat() << ")\n";
+                        cout<<"JARAK ANTARA A DAN B = " << b3.jarakReturn(a3) << endl;
                         break;
                     }
                     case 4:

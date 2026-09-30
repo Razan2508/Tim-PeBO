@@ -62,8 +62,8 @@ class Koordinat:
         temp.ordinat = self.ordinat
         return temp
 
-    def jarakReturn (self , a , b):
-        jarak = math.sqrt(((b.absis - a.absis)**2) + ((b.ordinat - a.ordinat)**2))
+    def jarakReturn (self , a):
+        jarak = math.sqrt(((self.absis - a.absis)**2) + ((self.ordinat - a.ordinat)**2))
 
         return jarak
 
@@ -73,7 +73,7 @@ class Koordinat:
         print("JARAK ANTARA A DAN B = " , jarak)
 
     def cetakVoid(self, a, b, c, d, e):
-        print("HASIL AKHIR : (VOID)")
+        print("HASIL AKHIR : (VOID) (OUTPUT DALAM)")
         print(f"TITIK A = ({a.getAbsis()},{a.getOrdinat()})")
         print(f"TITIK B = ({b.getAbsis()},{b.getOrdinat()})")
         print(f"TITIK TENGAH = ({c.getAbsis()},{c.getOrdinat()})")
@@ -82,13 +82,13 @@ class Koordinat:
         b.jarakVoid(a)
 
     def cetakReturn(self, a, b, c, d, e):
-        print("HASIL AKHIR : (RETURN)")
+        print("HASIL AKHIR : (RETURN) (OUTPUT DALAM)")
         print(f"TITIK A = ({a.getAbsis()},{a.getOrdinat()})")
         print(f"TITIK B = ({b.getAbsis()},{b.getOrdinat()})")
         print(f"TITIK TENGAH = ({c.getAbsis()},{c.getOrdinat()})")
         print(f"CERMIN TERHADAP X = ({d.getAbsis()},{d.getOrdinat()})")
         print(f"CERMIN TERHADAP Y = ({e.getAbsis()},{e.getOrdinat()})")
-        print("JARAK ANTARA A DAN B = " , self.jarakReturn(a,b))
+        print("JARAK ANTARA A DAN B = " , b.jarakReturn(a))
 
 if __name__ == "__main__":
     printer = Koordinat()
@@ -129,6 +129,15 @@ if __name__ == "__main__":
                     cx1.cerminXVoid(a1)
                     cy1.cerminYVoid(a1)
                     printer.cetakVoid(a1, b1, tengah1, cx1, cy1)
+                    print("")
+
+                    print("HASIL AKHIR : (VOID) (OUTPUT LUAR)")
+                    print(f"TITIK A = ({a1.getAbsis()},{a1.getOrdinat()})")
+                    print(f"TITIK B = ({b1.getAbsis()},{b1.getOrdinat()})")
+                    print(f"TITIK TENGAH = ({tengah1.getAbsis()},{tengah1.getOrdinat()})")
+                    print(f"CERMIN TERHADAP X = ({cx1.getAbsis()},{cx1.getOrdinat()})")
+                    print(f"CERMIN TERHADAP Y = ({cy1.getAbsis()},{cy1.getOrdinat()})")
+                    b1.jarakVoid(a1) 
 
                 elif pilihanVoid == 2:
                     print("\n[ Menjalankan Objek 2 - Void (Scanner) ]")
@@ -143,6 +152,15 @@ if __name__ == "__main__":
                     cx2.cerminXVoid(a2)
                     cy2.cerminYVoid(a2)
                     printer.cetakVoid(a2, b2, tengah2, cx2, cy2)
+                    print("")
+
+                    print("HASIL AKHIR : (VOID) (OUTPUT LUAR)")
+                    print(f"TITIK A = ({a2.getAbsis()},{a2.getOrdinat()})")
+                    print(f"TITIK B = ({b2.getAbsis()},{b2.getOrdinat()})")
+                    print(f"TITIK TENGAH = ({tengah2.getAbsis()},{tengah2.getOrdinat()})")
+                    print(f"CERMIN TERHADAP X = ({cx2.getAbsis()},{cx2.getOrdinat()})")
+                    print(f"CERMIN TERHADAP Y = ({cy2.getAbsis()},{cy2.getOrdinat()})")
+                    b2.jarakVoid(a2) 
 
                 elif pilihanVoid == 3:
                     print("\n[ Menjalankan Objek 3 - Void (Constructor) ]")
@@ -154,6 +172,15 @@ if __name__ == "__main__":
                     cx3.cerminXVoid(a3)
                     cy3.cerminYVoid(a3)
                     printer.cetakVoid(a3, b3, tengah3, cx3, cy3)
+
+                    print("")
+                    print("HASIL AKHIR : (VOID) (OUTPUT LUAR)")
+                    print(f"TITIK A = ({a3.getAbsis()},{a3.getOrdinat()})")
+                    print(f"TITIK B = ({b3.getAbsis()},{b3.getOrdinat()})")
+                    print(f"TITIK TENGAH = ({tengah3.getAbsis()},{tengah3.getOrdinat()})")
+                    print(f"CERMIN TERHADAP X = ({cx3.getAbsis()},{cx3.getOrdinat()})")
+                    print(f"CERMIN TERHADAP Y = ({cy3.getAbsis()},{cy3.getOrdinat()})")
+                    b3.jarakVoid(a3) 
 
                 elif pilihanVoid == 4:
                     subMenuVoidAktif = False
@@ -181,6 +208,15 @@ if __name__ == "__main__":
                     cy1 = a1.cerminYReturn()
                     printer.cetakReturn(a1, b1, tengah1, cx1, cy1)
 
+                    print("")
+                    print("HASIL AKHIR : (RETURN) (OUTPUT LUAR)")
+                    print(f"TITIK A = ({a1.getAbsis()},{a1.getOrdinat()})")
+                    print(f"TITIK B = ({b1.getAbsis()},{b1.getOrdinat()})")
+                    print(f"TITIK TENGAH = ({tengah1.getAbsis()},{tengah1.getOrdinat()})")
+                    print(f"CERMIN TERHADAP X = ({cx1.getAbsis()},{cx1.getOrdinat()})")
+                    print(f"CERMIN TERHADAP Y = ({cy1.getAbsis()},{cy1.getOrdinat()})")
+                    print("JARAK ANTARA A DAN B = " , b1.jarakReturn(a1))
+
                 elif pilihanReturn == 2:
                     print("\n[ Menjalankan Objek 2 - Return (Scanner) ]")
                     a2, b2 = Koordinat(), Koordinat()
@@ -194,6 +230,16 @@ if __name__ == "__main__":
                     cy2 = a2.cerminYReturn()
                     printer.cetakReturn(a2, b2, tengah2, cx2, cy2)
 
+                    print("")
+                    
+                    print("HASIL AKHIR : (RETURN) (OUTPUT LUAR)")
+                    print(f"TITIK A = ({a2.getAbsis()},{a2.getOrdinat()})")
+                    print(f"TITIK B = ({b2.getAbsis()},{b2.getOrdinat()})")
+                    print(f"TITIK TENGAH = ({tengah2.getAbsis()},{tengah2.getOrdinat()})")
+                    print(f"CERMIN TERHADAP X = ({cx2.getAbsis()},{cx2.getOrdinat()})")
+                    print(f"CERMIN TERHADAP Y = ({cy2.getAbsis()},{cy2.getOrdinat()})")
+                    print("JARAK ANTARA A DAN B = " , b2.jarakReturn(a2))
+
                 elif pilihanReturn == 3:
                     print("\n[ Menjalankan Objek 3 - Return (Constructor) ]")
                     a3 = Koordinat(4.0, -8.0)
@@ -203,6 +249,17 @@ if __name__ == "__main__":
                     cx3 = a3.cerminXReturn()
                     cy3 = a3.cerminYReturn()
                     printer.cetakReturn(a3, b3, tengah3, cx3, cy3)
+
+                    print("")
+                                        
+                    print("HASIL AKHIR : (RETURN) (OUTPUT LUAR)")
+                    print(f"TITIK A = ({a3.getAbsis()},{a3.getOrdinat()})")
+                    print(f"TITIK B = ({b3.getAbsis()},{b3.getOrdinat()})")
+                    print(f"TITIK TENGAH = ({tengah3.getAbsis()},{tengah3.getOrdinat()})")
+                    print(f"CERMIN TERHADAP X = ({cx3.getAbsis()},{cx3.getOrdinat()})")
+                    print(f"CERMIN TERHADAP Y = ({cy3.getAbsis()},{cy3.getOrdinat()})")
+                    print("JARAK ANTARA A DAN B = " , b3.jarakReturn(a3))
+                    
 
                 elif pilihanReturn == 4:
                     subMenuReturnAktif = False
