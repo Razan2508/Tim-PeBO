@@ -35,7 +35,6 @@ class Waktu {
         this.detik = detik;
     }
 
-    // Baca angka dengan validasi rentang (diulang sampai valid)
     static int bacaAngka(Scanner sc, String label, int min, int max) {
         while (true) {
             System.out.print(label + " (" + min + "-" + max + ") : ");
@@ -109,17 +108,17 @@ public class Nomor2_063_078_090 {
         Waktu w1 = new Waktu(), w2 = new Waktu();
 
         switch (objek) {
-            case 1: // Input dari Dalam / Setter
+            case 1:
                 System.out.println("\n[Objek 1 - Input dari Dalam / Setter]");
                 System.out.println("Waktu 1:"); w1.inputDalam(sc);
                 System.out.println("Waktu 2:"); w2.inputDalam(sc);
                 break;
-            case 2: // Input dari Luar / Scanner
+            case 2:
                 System.out.println("\n[Objek 2 - Input dari Luar / Scanner]");
                 System.out.println("Waktu 1:"); inputLuar(w1, sc);
                 System.out.println("Waktu 2:"); inputLuar(w2, sc);
                 break;
-            case 3: // Input dari Constructor
+            case 3:
                 System.out.println("\n[Objek 3 - Input dari Constructor]");
                 w1 = new Waktu(8, 30, 15);
                 w2 = new Waktu(10, 45, 50);

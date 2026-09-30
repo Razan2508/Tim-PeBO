@@ -14,7 +14,6 @@ Deskripsi     : Mencari selisih waktu berdasarkan input jam , menit , detik
 #include <cmath>
 using namespace std;
 
-// Baca angka dengan validasi rentang (diulang sampai valid)
 int bacaAngka(const string &label, int lo, int hi) {
     int n;
     while (true) {
@@ -116,7 +115,7 @@ void uji(bool modeVoid, int objek) {
     Waktu w1, w2, hasil;
 
     switch (objek) {
-        case 1: // Input dari Dalam / Setter
+        case 1:
             cout << "\n[Objek 1 - Input dari Dalam / Setter]" << endl;
             cout << "Waktu 1:" << endl; w1.inputDalam();
             cout << "Waktu 2:" << endl; w2.inputDalam();

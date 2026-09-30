@@ -8,7 +8,6 @@ Deskripsi     : Mencari selisih waktu berdasarkan input jam , menit , detik
 '''
 
 def baca_angka(label, lo, hi):
-    # Baca angka dengan validasi rentang (diulang sampai valid)
     while True:
         try:
             n = int(input(f"{label} ({lo}-{hi}) : "))
