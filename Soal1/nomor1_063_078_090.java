@@ -4,7 +4,7 @@ Nama Kelompok : Tim PeBO
 Nama Anggota  : Razan Ibrahim Nabil , DJEREMY RIELDY MARCHIANO PANJAITAN , MUHAMMAD IRSYAD AZHARUL HAQ
 NPM  Anggota  : 140810250090 , 140810250063 , 140810250078
 Tanggal Buat  : 16/09/2026
-Deskripsi     : Mnecari titik tengah , cermin terhadap x , dan cermin terhadap y
+Deskripsi     : Mencari titik tengah , cermin terhadap x , dan cermin terhadap y
 */
 
 import java.util.Scanner;
