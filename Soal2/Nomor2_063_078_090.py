@@ -1,273 +1,193 @@
-# Nama Program  :
+# Nama Program  : Gaji Harian dan Lembur Pegawai
 # Nama Kelompok : Tim PeBO
 # Nama Anggota  : Razan Ibrahim Nabil, Muhammah Irsyad Azzarul Haq, Djeremy Rieldy Marchiano Panjaitan
 # NPM  Anggota  : 140810250090, 250078, 250063
 # Tanggal Buat  : 24/09/2026
-# Deskripsi     :
-
-from datetime import date, datetime, timedelta
-
-def parse_waktu(teks):
-    """Pengganti LocalTime.parse(..., "HH:mm"). Mengembalikan datetime.time,
-    atau melempar ValueError jika formatnya salah (seperti exception di Java)."""
-    if len(teks) != 5:
-        raise ValueError("Format waktu tidak valid: " + teks)
-    return datetime.strptime(teks, "%H:%M").time()
+# Deskripsi     : Menghitung gaji harian + lembur berdasarkan lama kerja (waktu datang - waktu pulang).
+#                 Lembur berlaku jika kerja >= 8 jam, kelebihan dibulatkan ke bawah (minimal 1 jam).
+#                 Pegawai yang kerja kurang dari 8 jam diberi status "peringatan".
 
 
 def format_rupiah(nilai):
-    """Pengganti "%,.0f" di Java: 3360000 -> "3.360.000" """
-    return f"{nilai:,.0f}".replace(",", ".")
-
-
-def jam_menit(lama):
-    """Mengubah timedelta menjadi (jam, menit). Pengganti toHours() dan toMinutesPart()."""
-    total_menit = int(lama.total_seconds() // 60)
-    return total_menit // 60, total_menit % 60
+    """3360000 -> '3.360.000'"""
+    return f"{nilai:,}".replace(",", ".")
 
 
 def baca_int(pesan):
-    """Pengganti scanner.nextInt(): diulang sampai yang diketik benar-benar angka."""
     while True:
         try:
-            return int(input(pesan))
+            return int(input(pesan).strip())
         except ValueError:
             print("Input harus berupa angka.")
 
 
-def baca_waktu(pesan):
-    """Membaca waktu dari keyboard, diulang sampai formatnya valid."""
-    while True:
-        teks = input(pesan).strip()
-        try:
-            return parse_waktu(teks)
-        except ValueError:
-            print("Format waktu tidak valid. Contoh: 08:00 atau 17:30")
+class Waktu:
+    def __init__(self, jam=0, menit=0, detik=0):
+        self._jam = jam
+        self._menit = menit
+        self._detik = detik
+
+    @classmethod
+    def dari_teks(cls, teks):
+        """Membuat Waktu dari 'HH:mm:ss'. Melempar ValueError jika formatnya salah."""
+        bagian = teks.split(":")
+        if len(teks) != 8 or len(bagian) != 3 or not all(b.isdigit() for b in bagian):
+            raise ValueError("Format waktu tidak valid: " + teks)
+        jam, menit, detik = (int(b) for b in bagian)
+        if jam > 23 or menit > 59 or detik > 59:
+            raise ValueError("Nilai waktu di luar batas: " + teks)
+        return cls(jam, menit, detik)
+
+    @classmethod
+    def dari_detik(cls, total):
+        return cls(total // 3600, (total % 3600) // 60, total % 60)
+
+    # Input
+    def input(self, pesan):
+        while True:
+            try:
+                w = Waktu.dari_teks(input(pesan).strip())
+            except ValueError:
+                print("Format waktu tidak valid. Contoh: 08:00:00 atau 17:15:10")
+                continue
+            self._jam, self._menit, self._detik = w._jam, w._menit, w._detik
+            return
+
+    # Proses
+    def ke_detik(self):
+        return self._jam * 3600 + self._menit * 60 + self._detik
+
+    def selisih(self, lain):
+        """Selisih dari waktu ini sampai waktu lain (menangani lewat tengah malam)."""
+        beda = lain.ke_detik() - self.ke_detik()
+        if beda < 0:
+            beda += 24 * 3600
+        return Waktu.dari_detik(beda)
+
+    # Output
+    def tampil(self):
+        return f"{self._jam:02d}:{self._menit:02d}:{self._detik:02d}"
 
 
 class Pegawai:
-    GAPOK = {1: 1500000, 2: 2000000, 3: 3000000, 4: 5000000}
-    PERSEN_TUNJANGAN = {1: 0.10, 2: 0.12, 3: 0.12, 4: 0.15}
-    PERSEN_POTONGAN = {1: 0.01, 2: 0.02, 3: 0.02, 4: 0.04}
+    GAJI_HARIAN = {1: 150000, 2: 200000, 3: 400000, 4: 500000}
+    TARIF_LEMBUR = {1: 50000, 2: 75000, 3: 150000, 4: 200000}
+    BATAS_DETIK = 8 * 3600
+    LEBAR = 122
 
-    def __init__(self, nip="", nama="", golongan=0):
+    def __init__(self, nip="", nama="", golongan=0, datang=None, pulang=None):
         self._nip = nip
         self._nama = nama
         self._golongan = golongan
-        self._waktu_datang = None 
-        self._waktu_pulang = None
+        self._datang = datang if datang is not None else Waktu()
+        self._pulang = pulang if pulang is not None else Waktu()
+        self._lama = Waktu()
+        self._jam_lembur = Waktu()
+        self._gaji_harian = 0
+        self._lembur = 0
+        self._total = 0
+        self._status = "-"
+        if nip:
+            self.proses()
 
-    def set_pegawai(self, nip, nama, golongan):
-        self._nip = nip
-        self._nama = nama
-        self._golongan = golongan
+    # Input
+    def input(self):
+        self._nip = input("Masukkan NIP: ").strip()
+        self._nama = input("Masukkan Nama: ").strip()
+        self._golongan = 0
+        while self._golongan not in self.GAJI_HARIAN:
+            self._golongan = baca_int("Masukkan Golongan (1/2/3/4): ")
+            if self._golongan not in self.GAJI_HARIAN:
+                print("Golongan harus 1, 2, 3, atau 4.")
+        self._datang = Waktu()
+        self._pulang = Waktu()
+        self._datang.input("Masukkan Waktu Datang (HH:mm:ss): ")
+        self._pulang.input("Masukkan Waktu Pulang (HH:mm:ss): ")
+        self.proses()
 
-    def set_nip(self, nip):
-        self._nip = nip
+    # Proses
+    def proses(self):
+        self._lama = self._datang.selisih(self._pulang)
+        detik_lama = self._lama.ke_detik()
+        kelebihan = detik_lama - self.BATAS_DETIK
 
-    def set_nama(self, nama):
-        self._nama = nama
+        self._gaji_harian = self.GAJI_HARIAN.get(self._golongan, 0)
+        self._jam_lembur = Waktu()
+        self._lembur = 0
 
-    def set_golongan(self, golongan):
-        self._golongan = golongan
-
-    def set_waktu_datang(self, waktu):
-        self._waktu_datang = parse_waktu(waktu)
-
-    def set_waktu_pulang(self, waktu):
-        self._waktu_pulang = parse_waktu(waktu)
-
-    def set_waktu_kerja(self, datang, pulang):
-        self.set_waktu_datang(datang)
-        self.set_waktu_pulang(pulang)
-
-    # ---------- Getter ----------
-    def get_nip(self):
-        return self._nip
-
-    def get_nama(self):
-        return self._nama
-
-    def get_golongan(self):
-        return self._golongan
-
-    def get_waktu_datang(self):
-        return self._waktu_datang
-
-    def get_waktu_pulang(self):
-        return self._waktu_pulang
-
-    def get_waktu_datang_teks(self):
-        return "-" if self._waktu_datang is None else self._waktu_datang.strftime("%H:%M")
-
-    def get_waktu_pulang_teks(self):
-        return "-" if self._waktu_pulang is None else self._waktu_pulang.strftime("%H:%M")
-
-    # ---------- Input ----------
-    def input_waktu(self):
-        self._waktu_datang = baca_waktu("Masukkan Waktu Datang (HH:mm): ")
-        self._waktu_pulang = baca_waktu("Masukkan Waktu Pulang (HH:mm): ")
-
-    def input_pegawai(self):
-        self._nip = input("Masukkan NIP: ")
-        self._nama = input("Masukkan Nama Pegawai: ")
-        self._golongan = baca_int("Masukkan Golongan (1/2/3/4): ")
-        self.input_waktu()
-
-    def hitung_lama_kerja_return(self):
-        if self._waktu_datang is None or self._waktu_pulang is None:
-            return timedelta(0)
-        hari_ini = date.today()
-        lama = (datetime.combine(hari_ini, self._waktu_pulang)
-                - datetime.combine(hari_ini, self._waktu_datang))
-        if lama < timedelta(0):
-            lama += timedelta(hours=24)
-        return lama
-
-    def get_lama_kerja_teks(self):
-        jam, menit = jam_menit(self.hitung_lama_kerja_return())
-        return f"{jam} jam {menit} menit"
-
-    def hitung_lama_kerja_void(self):
-        if self._waktu_datang is None or self._waktu_pulang is None:
-            print(" Lama Kerja = - (waktu belum diisi)")
-            return
-        hari_ini = date.today()
-        lama = (datetime.combine(hari_ini, self._waktu_pulang)
-                - datetime.combine(hari_ini, self._waktu_datang))
-        if lama < timedelta(0):
-            lama += timedelta(hours=24)
-        jam, menit = jam_menit(lama)
-        print(f" Lama Kerja = {jam} jam {menit} menit")
-
-    def cari_gapok(self):
-        return self.GAPOK.get(self._golongan, 0)
-
-    def cari_tunjangan(self):
-        return self.cari_gapok() * self.PERSEN_TUNJANGAN.get(self._golongan, 0)
-
-    def cari_potongan(self):
-        return self.cari_gapok() * self.PERSEN_POTONGAN.get(self._golongan, 0)
-
-    def cari_gaji_total(self):
-        return self.cari_gapok() + self.cari_tunjangan() - self.cari_potongan()
-
-    def hitung_gaji_return(self):
-        return self.cari_gapok() + self.cari_tunjangan() - self.cari_potongan()
-
-    def hitung_gaji_void(self):
-        gapok = self.cari_gapok()
-        tunjangan = self.cari_tunjangan()
-        potongan = self.cari_potongan()
-        total = gapok + tunjangan - potongan
-        print(f" Gapok      = Rp {format_rupiah(gapok)}")
-        print(f" Tunjangan  = Rp {format_rupiah(tunjangan)}")
-        print(f" Potongan   = Rp {format_rupiah(potongan)}")
-        print(f" Total Gaji = Rp {format_rupiah(total)}")
-
-    def cetak_waktu_kerja(self):
-        if self._waktu_datang is None or self._waktu_pulang is None:
-            lama = "-"
+        if detik_lama < self.BATAS_DETIK:
+            self._status = "peringatan"
         else:
-            lama = self.get_lama_kerja_teks()
-        print(f" Waktu Datang (Clock In)  = {self.get_waktu_datang_teks()}")
-        print(f" Waktu Pulang (Clock Out) = {self.get_waktu_pulang_teks()}")
-        print(f" Lama Kerja               = {lama}")
+            self._status = "ok"
+            if kelebihan >= 3600:
+                self._jam_lembur = Waktu.dari_detik(kelebihan)
+                jam_bulat = kelebihan // 3600  # pembulatan ke bawah
+                self._lembur = jam_bulat * self.TARIF_LEMBUR.get(self._golongan, 0)
+        self._total = self._gaji_harian + self._lembur
 
-    def cetak_pegawai(self):
-        print("-" * 112)
-        print(f"| {'NIP':<15} | {'Nama':<15} | {'Gol':<3} | {'Gapok':<13} | "
-              f"{'Tunjangan':<13} | {'Potongan':<13} | {'Total Gaji':<15} |")
-        print("-" * 112)
-        print(f"| {self._nip:<15} | {self._nama:<15} | {self._golongan:<3} | "
-              f"Rp {format_rupiah(self.cari_gapok()):>10} | "
-              f"Rp {format_rupiah(self.cari_tunjangan()):>10} | "
-              f"Rp {format_rupiah(self.cari_potongan()):>10} | "
-              f"Rp {format_rupiah(self.cari_gaji_total()):>12} |")
-        print("-" * 112)
-        self.cetak_waktu_kerja()
+    def sudah_diisi(self):
+        return self._nip != ""
+
+    # Output
+    @classmethod
+    def cetak_garis(cls):
+        print("-" * cls.LEBAR)
+
+    @classmethod
+    def cetak_header(cls):
+        print("\n" + " " * 45 + "Daftar Gaji Harian PT Informatika")
+        cls.cetak_garis()
+        print(f"{'No':<4}{'NIP':<7}{'Nama':<15}{'Gol':<4}{'Datang':<10}{'Pulang':<10}"
+              f"{'Lama':<10}{'Jam Lembur':<12}{'Gaji Harian':>11}{'Lembur':>10}{'Total':>10}"
+              f"  {'Status'}")
+        cls.cetak_garis()
+
+    def cetak_baris(self, no):
+        print(f"{str(no) + '.':<4}{self._nip:<7}{self._nama:<15}{self._golongan:<4}"
+              f"{self._datang.tampil():<10}{self._pulang.tampil():<10}"
+              f"{self._lama.tampil():<10}{self._jam_lembur.tampil():<12}"
+              f"{format_rupiah(self._gaji_harian):>11}{format_rupiah(self._lembur):>10}"
+              f"{format_rupiah(self._total):>10}  {self._status}")
 
 
-def pilih_objek(daftar):
-    """Memilih objek 1-3 sekaligus menyiapkan datanya.
-    Mengembalikan objek yang dipilih, atau None jika pilihan tidak valid."""
-    print("1. Obj. 1 (data diset lewat setter)")
-    print("2. Obj. 2 (data diset lewat constructor)")
-    print("3. Obj. 3 (data diinput dari keyboard)")
-    no = baca_int("Pilih objek (1-3): ")
-
-    if no == 1:
-        daftar[0].set_pegawai("140810250078", "Irsyad", 1)
-        daftar[0].set_waktu_kerja("07:45", "16:15")
-    elif no == 2:
-        pass 
-    elif no == 3:
-        daftar[2].input_pegawai()
-    else:
+def input_objek(daftar):
+    no = baca_int("Pilih objek yang diinput (1-3): ")
+    if no < 1 or no > len(daftar):
         print("Objek tidak valid.")
-        return None
-    return daftar[no - 1]
-
-
-def hitung_void(daftar):
-    """Cara 1: method void, hasil dicetak di dalam method."""
-    p = pilih_objek(daftar)
-    if p is None:
         return
-    print(f" NIP        = {p.get_nip()}")
-    print(f" Nama       = {p.get_nama()}")
-    print(f" Golongan   = {p.get_golongan()}")
-    print(f" Clock In   = {p.get_waktu_datang_teks()}")
-    print(f" Clock Out  = {p.get_waktu_pulang_teks()}")
-    p.hitung_gaji_void()
-    p.hitung_lama_kerja_void()
+    daftar[no - 1].input()
+    print(f"Data objek {no} tersimpan.")
 
 
-def hitung_return(daftar):
-    """Cara 2: method return, hasil diterima lalu dicetak di sini."""
-    p = pilih_objek(daftar)
-    if p is None:
-        return
-    gapok = p.cari_gapok()
-    tunjangan = p.cari_tunjangan()
-    potongan = p.cari_potongan()
-    total = p.hitung_gaji_return()
-    jam, menit = jam_menit(p.hitung_lama_kerja_return())
-    print(f" NIP        = {p.get_nip()}")
-    print(f" Nama       = {p.get_nama()}")
-    print(f" Golongan   = {p.get_golongan()}")
-    print(f" Clock In   = {p.get_waktu_datang_teks()}")
-    print(f" Clock Out  = {p.get_waktu_pulang_teks()}")
-    print(f" Gapok      = Rp {format_rupiah(gapok)}")
-    print(f" Tunjangan  = Rp {format_rupiah(tunjangan)}")
-    print(f" Potongan   = Rp {format_rupiah(potongan)}")
-    print(f" Total Gaji = Rp {format_rupiah(total)}")
-    print(f" Lama Kerja = {jam} jam {menit} menit")
+def tampilkan_daftar(daftar):
+    Pegawai.cetak_header()
+    no = 0
+    for p in daftar:
+        if p.sudah_diisi():
+            no += 1
+            p.cetak_baris(no)
+    Pegawai.cetak_garis()
 
 
 def main():
     daftar = [
-        Pegawai(),
-        Pegawai("140810250090", "Razan", 3),
-        Pegawai(),
+        Pegawai("001", "Ali", 3, Waktu(8, 0, 0), Waktu(17, 15, 10)),
+        Pegawai("002", "Budi", 1, Waktu.dari_teks("08:00:00"), Waktu.dari_teks("15:30:00")),
+        Pegawai(),  # diisi lewat keyboard
     ]
 
-    daftar[1].set_waktu_kerja("08:00", "17:30")
-
     pilihan = 0
-    while pilihan != 3: 
-        print("\n===== MENU GajiPegawai =====")
-        print("1. Hitung Gaji & Lama Kerja (void)")
-        print("2. Hitung Gaji & Lama Kerja (return)")
+    while pilihan != 3:
+        print("\n===== MENU GAJI HARIAN PT INFORMATIKA =====")
+        print("1. Input data pegawai (objek 1-3)")
+        print("2. Tampilkan daftar gaji harian")
         print("3. Keluar")
         pilihan = baca_int("Pilih menu: ")
 
         if pilihan == 1:
-            print("Hitung (void)")
-            hitung_void(daftar)
+            input_objek(daftar)
         elif pilihan == 2:
-            print("Hitung (return)")
-            hitung_return(daftar)
+            tampilkan_daftar(daftar)
         elif pilihan == 3:
             print("Keluar dari program.")
         else:
@@ -277,5 +197,5 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except (EOFError, KeyboardInterrupt): 
+    except (EOFError, KeyboardInterrupt):
         print("\nProgram dihentikan.")

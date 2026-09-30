@@ -1,20 +1,19 @@
 /*
-Nama Program  : Gaji Pegawai
-Nama Kelompok : Tim PeBO 
+Nama Program  : Gaji Harian dan Lembur Pegawai
+Nama Kelompok : Tim PeBO
 Nama Anggota  : Razan Ibrahim Nabil, Muhammah Irsyad Azzarul Haq, Djeremy Rieldy Marchiano Panjaitan
 NPM  Anggota  : 140810250090, 250078, 250063
 Tanggal Buat  : 24/09/2026
-Deskripsi     : 
+Deskripsi     : Menghitung gaji harian + lembur berdasarkan lama kerja (waktu datang - waktu pulang).
+                Lembur berlaku jika kerja >= 8 jam, kelebihan dibulatkan ke bawah (minimal 1 jam).
+                Pegawai yang kerja kurang dari 8 jam diberi status "peringatan".
 */
 
 #include <iostream>
 #include <iomanip>
 #include <sstream>
 #include <string>
-#include <optional>
-#include <stdexcept>
 #include <limits>
-#include <cmath>
 #include <cctype>
 #include <cstdlib>
 using namespace std;
@@ -29,24 +28,6 @@ string bacaBaris(const string& pesan) {
     return teks;
 }
 
-int bacaInt(const string& pesan) {
-    int nilai;
-    while (true) {
-        cout << pesan;
-        if (cin >> nilai) {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            return nilai;
-        }
-        if (cin.eof()) {
-            cout << "\nInput berakhir. Program dihentikan.\n";
-            exit(0);
-        }
-        cout << "Input harus berupa angka.\n";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    }
-}
-
 string trim(const string& teks) {
     size_t awal = teks.find_first_not_of(" \t\r\n");
     if (awal == string::npos) return "";
@@ -54,334 +35,247 @@ string trim(const string& teks) {
     return teks.substr(awal, akhir - awal + 1);
 }
 
-bool parseWaktu(const string& teks, int& hasilMenit) {
-    if (teks.size() != 5 || teks[2] != ':') return false;
-    for (int i : {0, 1, 3, 4}) {
-        if (!isdigit(static_cast<unsigned char>(teks[i]))) return false;
+bool parseAngka(const string& teks, int& hasil) {
+    if (teks.empty() || teks.size() > 9) return false;
+    for (char c : teks) {
+        if (!isdigit(static_cast<unsigned char>(c))) return false;
     }
-    int jam = stoi(teks.substr(0, 2));
-    int menit = stoi(teks.substr(3, 2));
-    if (jam > 23 || menit > 59) return false;
-    hasilMenit = jam * 60 + menit;
+    hasil = stoi(teks);
     return true;
 }
 
-string formatWaktu(int totalMenit) {
-    ostringstream hasil;
-    hasil << setfill('0') << setw(2) << totalMenit / 60 << ":"
-          << setw(2) << totalMenit % 60;
-    return hasil.str();
+int bacaInt(const string& pesan) {
+    while (true) {
+        int nilai;
+        if (parseAngka(trim(bacaBaris(pesan)), nilai)) return nilai;
+        cout << "Input harus berupa angka.\n";
+    }
 }
 
-string formatRupiah(double nilai) {
-    string angka = to_string(llround(nilai));
-    int batas = (angka[0] == '-') ? 1 : 0;
-    for (int i = static_cast<int>(angka.size()) - 3; i > batas; i -= 3) {
+string formatRupiah(long long nilai) {
+    string angka = to_string(nilai);
+    for (int i = static_cast<int>(angka.size()) - 3; i > 0; i -= 3) {
         angka.insert(i, ".");
     }
     return angka;
 }
 
-int bacaWaktu(const string& pesan) {
-    while (true) {
-        string teks = trim(bacaBaris(pesan));
-        int menit;
-        if (parseWaktu(teks, menit)) return menit;
-        cout << "Format waktu tidak valid. Contoh: 08:00 atau 17:30\n";
-    }
-}
-
-
-class Pegawai {
+class Waktu {
 private:
-    string nip;
-    string nama;
-    int golongan;
-    optional<int> waktuDatang;   
-    optional<int> waktuPulang;   
+    int jam;
+    int menit;
+    int detik;
 
 public:
-    Pegawai() : nip(""), nama(""), golongan(0) {}
+    // Constructor
+    Waktu() : jam(0), menit(0), detik(0) {}
+    Waktu(int jam, int menit, int detik) : jam(jam), menit(menit), detik(detik) {}
 
-    Pegawai(const string& nip, const string& nama, int golongan)
-        : nip(nip), nama(nama), golongan(golongan) {}
-
-    // ---------- Setter ----------
-    void setPegawai(const string& nip, const string& nama, int golongan) {
-        this->nip = nip;
-        this->nama = nama;
-        this->golongan = golongan;
-    }
-
-    void setNip(const string& nip) {
-        this->nip = nip;
-    }
-
-    void setNama(const string& nama) {
-        this->nama = nama;
-    }
-
-    void setGolongan(int golongan) {
-        this->golongan = golongan;
-    }
-
-    void setWaktuDatang(const string& waktu) {
-        int menit;
-        if (!parseWaktu(waktu, menit)) {
-            throw invalid_argument("Format waktu tidak valid: " + waktu);
+    // Membaca teks "HH:mm:ss", mengembalikan false jika format salah
+    bool dariTeks(const string& teks) {
+        if (teks.size() != 8 || teks[2] != ':' || teks[5] != ':') return false;
+        for (int i : {0, 1, 3, 4, 6, 7}) {
+            if (!isdigit(static_cast<unsigned char>(teks[i]))) return false;
         }
-        waktuDatang = menit;
+        int j = stoi(teks.substr(0, 2));
+        int m = stoi(teks.substr(3, 2));
+        int d = stoi(teks.substr(6, 2));
+        if (j > 23 || m > 59 || d > 59) return false;
+        jam = j;
+        menit = m;
+        detik = d;
+        return true;
     }
 
-    void setWaktuPulang(const string& waktu) {
-        int menit;
-        if (!parseWaktu(waktu, menit)) {
-            throw invalid_argument("Format waktu tidak valid: " + waktu);
-        }
-        waktuPulang = menit;
-    }
-
-    void setWaktuKerja(const string& datang, const string& pulang) {
-        setWaktuDatang(datang);
-        setWaktuPulang(pulang);
-    }
-
-    // ---------- Getter (const = tidak mengubah isi objek) ----------
-    string getNip() const {
-        return nip;
-    }
-
-    string getNama() const {
-        return nama;
-    }
-
-    int getGolongan() const {
-        return golongan;
-    }
-
-    optional<int> getWaktuDatang() const {
-        return waktuDatang;
-    }
-
-    optional<int> getWaktuPulang() const {
-        return waktuPulang;
-    }
-
-    string getWaktuDatangTeks() const {
-        return waktuDatang.has_value() ? formatWaktu(*waktuDatang) : "-";
-    }
-
-    string getWaktuPulangTeks() const {
-        return waktuPulang.has_value() ? formatWaktu(*waktuPulang) : "-";
-    }
-
-    // ---------- Input ----------
-    void inputWaktu() {
-        waktuDatang = bacaWaktu("Masukkan Waktu Datang (HH:mm): ");
-        waktuPulang = bacaWaktu("Masukkan Waktu Pulang (HH:mm): ");
-    }
-
-    void inputPegawai() {
-        nip = bacaBaris("Masukkan NIP: ");
-        nama = bacaBaris("Masukkan Nama Pegawai: ");
-        golongan = bacaInt("Masukkan Golongan (1/2/3/4): ");
-        inputWaktu();
-    }
-
-    int hitungLamaKerjaReturn() const {
-        if (!waktuDatang.has_value() || !waktuPulang.has_value()) {
-            return 0;
-        }
-        int lama = *waktuPulang - *waktuDatang;
-        if (lama < 0) {
-            lama += 24 * 60;
-        }
-        return lama;
-    }
-
-    string getLamaKerjaTeks() const {
-        int lama = hitungLamaKerjaReturn();
-        return to_string(lama / 60) + " jam " + to_string(lama % 60) + " menit";
-    }
-
-    void hitungLamaKerjaVoid() const {
-        if (!waktuDatang.has_value() || !waktuPulang.has_value()) {
-            cout << " Lama Kerja = - (waktu belum diisi)\n";
-            return;
-        }
-        int lama = *waktuPulang - *waktuDatang;
-        if (lama < 0) {
-            lama += 24 * 60;
-        }
-        cout << " Lama Kerja = " << lama / 60 << " jam " << lama % 60 << " menit\n";
-    }
-
-    // ---------- Gaji ----------
-    double cariGapok() const {
-        switch (golongan) {
-            case 1: return 1500000;
-            case 2: return 2000000;
-            case 3: return 3000000;
-            case 4: return 5000000;
-            default: return 0;
+    // Input
+    void input(const string& pesan) {
+        while (true) {
+            if (dariTeks(trim(bacaBaris(pesan)))) return;
+            cout << "Format waktu tidak valid. Contoh: 08:00:00 atau 17:15:10\n";
         }
     }
 
-    double cariTunjangan() const {
-        switch (golongan) {
-            case 1: return cariGapok() * 0.10;
-            case 2: return cariGapok() * 0.12;
-            case 3: return cariGapok() * 0.12;
-            case 4: return cariGapok() * 0.15;
-            default: return 0;
-        }
+    // Proses
+    int keDetik() const {
+        return jam * 3600 + menit * 60 + detik;
     }
 
-    double cariPotongan() const {
-        switch (golongan) {
-            case 1: return cariGapok() * 0.01;
-            case 2: return cariGapok() * 0.02;
-            case 3: return cariGapok() * 0.02;
-            case 4: return cariGapok() * 0.04;
-            default: return 0;
-        }
+    static Waktu dariDetik(int total) {
+        return Waktu(total / 3600, (total % 3600) / 60, total % 60);
     }
 
-    double cariGajiTotal() const {
-        return cariGapok() + cariTunjangan() - cariPotongan();
+    // Selisih dari waktu ini sampai waktu lain (menangani lewat tengah malam)
+    Waktu selisih(const Waktu& lain) const {
+        int beda = lain.keDetik() - keDetik();
+        if (beda < 0) beda += 24 * 3600;
+        return dariDetik(beda);
     }
 
-    double hitungGajiReturn() const {
-        return cariGapok() + cariTunjangan() - cariPotongan();
-    }
-
-    void hitungGajiVoid() const {
-        double gapok = cariGapok();
-        double tunjangan = cariTunjangan();
-        double potongan = cariPotongan();
-        double total = gapok + tunjangan - potongan;
-        cout << " Gapok      = Rp " << formatRupiah(gapok) << "\n";
-        cout << " Tunjangan  = Rp " << formatRupiah(tunjangan) << "\n";
-        cout << " Potongan   = Rp " << formatRupiah(potongan) << "\n";
-        cout << " Total Gaji = Rp " << formatRupiah(total) << "\n";
-    }
-
-    void cetakWaktuKerja() const {
-        string datang = waktuDatang.has_value() ? formatWaktu(*waktuDatang) : "-";
-        string pulang = waktuPulang.has_value() ? formatWaktu(*waktuPulang) : "-";
-        string lama = (waktuDatang.has_value() && waktuPulang.has_value()) ? getLamaKerjaTeks() : "-";
-
-        cout << " Waktu Datang (Clock In)  = " << datang << "\n";
-        cout << " Waktu Pulang (Clock Out) = " << pulang << "\n";
-        cout << " Lama Kerja               = " << lama << "\n";
-    }
-
-    void cetakPegawai() const {
-        cout << string(112, '-') << "\n";
-        cout << left
-             << "| " << setw(15) << "NIP"
-             << " | " << setw(15) << "Nama"
-             << " | " << setw(3) << "Gol"
-             << " | " << setw(13) << "Gapok"
-             << " | " << setw(13) << "Tunjangan"
-             << " | " << setw(13) << "Potongan"
-             << " | " << setw(15) << "Total Gaji" << " |\n";
-        cout << string(112, '-') << "\n";
-        cout << left
-             << "| " << setw(15) << nip
-             << " | " << setw(15) << nama
-             << " | " << setw(3) << golongan
-             << right
-             << " | Rp " << setw(10) << formatRupiah(cariGapok())
-             << " | Rp " << setw(10) << formatRupiah(cariTunjangan())
-             << " | Rp " << setw(10) << formatRupiah(cariPotongan())
-             << " | Rp " << setw(12) << formatRupiah(cariGajiTotal()) << " |\n";
-        cout << left;
-        cout << string(112, '-') << "\n";
-        cetakWaktuKerja();
+    // Output
+    string tampil() const {
+        ostringstream hasil;
+        hasil << setfill('0') << setw(2) << jam << ":"
+              << setw(2) << menit << ":" << setw(2) << detik;
+        return hasil.str();
     }
 };
 
-Pegawai* pilihObjek(Pegawai daftar[]) {
-    cout << "1. Obj. 1 (data diset lewat setter)\n";
-    cout << "2. Obj. 2 (data diset lewat constructor)\n";
-    cout << "3. Obj. 3 (data diinput dari keyboard)\n";
-    int no = bacaInt("Pilih objek (1-3): ");
+class Pegawai {
+private:
+    static const int BATAS_DETIK = 8 * 3600;
 
-    switch (no) {
-        case 1:
-            daftar[0].setPegawai("140810250078", "Irsyad", 1);
-            daftar[0].setWaktuKerja("07:45", "16:15");
-            break;
-        case 2:
-            break;
-        case 3:
-            daftar[2].inputPegawai();
-            break;
-        default:
-            cout << "Objek tidak valid.\n";
-            return nullptr;
+    string nip;
+    string nama;
+    int golongan;
+    Waktu datang;
+    Waktu pulang;
+    Waktu lama;
+    Waktu jamLembur;
+    long long gajiHarian;
+    long long lembur;
+    long long total;
+    string status;
+
+    static long long gapokGolongan(int gol) {
+        switch (gol) {
+            case 1: return 150000;
+            case 2: return 200000;
+            case 3: return 400000;
+            case 4: return 500000;
+            default: return 0;
+        }
     }
-    return &daftar[no - 1];
+
+    static long long tarifLembur(int gol) {
+        switch (gol) {
+            case 1: return 50000;
+            case 2: return 75000;
+            case 3: return 150000;
+            case 4: return 200000;
+            default: return 0;
+        }
+    }
+
+public:
+    // Constructor
+    Pegawai() : nip(""), nama(""), golongan(0), gajiHarian(0), lembur(0), total(0), status("-") {}
+
+    Pegawai(const string& nip, const string& nama, int golongan, const Waktu& datang, const Waktu& pulang)
+        : nip(nip), nama(nama), golongan(golongan), datang(datang), pulang(pulang),
+          gajiHarian(0), lembur(0), total(0) {
+        proses();
+    }
+
+    // Input
+    void input() {
+        nip = trim(bacaBaris("Masukkan NIP: "));
+        nama = trim(bacaBaris("Masukkan Nama: "));
+        golongan = 0;
+        while (golongan < 1 || golongan > 4) {
+            golongan = bacaInt("Masukkan Golongan (1/2/3/4): ");
+            if (golongan < 1 || golongan > 4) cout << "Golongan harus 1, 2, 3, atau 4.\n";
+        }
+        datang.input("Masukkan Waktu Datang (HH:mm:ss): ");
+        pulang.input("Masukkan Waktu Pulang (HH:mm:ss): ");
+        proses();
+    }
+
+    // Proses
+    void proses() {
+        lama = datang.selisih(pulang);
+        int detikLama = lama.keDetik();
+        int kelebihan = detikLama - BATAS_DETIK;
+
+        gajiHarian = gapokGolongan(golongan);
+        jamLembur = Waktu();
+        lembur = 0;
+
+        if (detikLama < BATAS_DETIK) {
+            status = "peringatan";
+        } else {
+            status = "ok";
+            if (kelebihan >= 3600) {
+                jamLembur = Waktu::dariDetik(kelebihan);
+                long long jamBulat = kelebihan / 3600;  // pembulatan ke bawah
+                lembur = jamBulat * tarifLembur(golongan);
+            }
+        }
+        total = gajiHarian + lembur;
+    }
+
+    bool sudahDiisi() const {
+        return !nip.empty();
+    }
+
+    // Output
+    static void cetakGaris() {
+        cout << string(122, '-') << "\n";
+    }
+
+    static void cetakHeader() {
+        cout << "\n" << string(45, ' ') << "Daftar Gaji Harian PT Informatika\n";
+        cetakGaris();
+        cout << left << setw(4) << "No" << setw(7) << "NIP" << setw(15) << "Nama"
+             << setw(4) << "Gol" << setw(10) << "Datang" << setw(10) << "Pulang"
+             << setw(10) << "Lama" << setw(12) << "Jam Lembur"
+             << right << setw(11) << "Gaji Harian" << setw(10) << "Lembur" << setw(10) << "Total"
+             << "  " << left << "Status" << "\n";
+        cetakGaris();
+    }
+
+    void cetakBaris(int no) const {
+        cout << left << setw(4) << (to_string(no) + ".") << setw(7) << nip << setw(15) << nama
+             << setw(4) << golongan << setw(10) << datang.tampil() << setw(10) << pulang.tampil()
+             << setw(10) << lama.tampil() << setw(12) << jamLembur.tampil()
+             << right << setw(11) << formatRupiah(gajiHarian) << setw(10) << formatRupiah(lembur)
+             << setw(10) << formatRupiah(total)
+             << "  " << left << status << "\n";
+    }
+};
+
+void inputObjek(Pegawai daftar[], int jumlah) {
+    int no = bacaInt("Pilih objek yang diinput (1-3): ");
+    if (no < 1 || no > jumlah) {
+        cout << "Objek tidak valid.\n";
+        return;
+    }
+    daftar[no - 1].input();
+    cout << "Data objek " << no << " tersimpan.\n";
 }
 
-void HitungVoid(Pegawai daftar[]) {
-    Pegawai* p = pilihObjek(daftar);
-    if (p == nullptr) return;
-    cout << " NIP        = " << p->getNip() << "\n";
-    cout << " Nama       = " << p->getNama() << "\n";
-    cout << " Golongan   = " << p->getGolongan() << "\n";
-    cout << " Clock In   = " << p->getWaktuDatangTeks() << "\n";
-    cout << " Clock Out  = " << p->getWaktuPulangTeks() << "\n";
-    p->hitungGajiVoid();
-    p->hitungLamaKerjaVoid();
-}
-
-void HitungReturn(Pegawai daftar[]) {
-    Pegawai* p = pilihObjek(daftar);
-    if (p == nullptr) return;
-    double gapok = p->cariGapok();
-    double tunjangan = p->cariTunjangan();
-    double potongan = p->cariPotongan();
-    double total = p->hitungGajiReturn();
-    int lama = p->hitungLamaKerjaReturn();  
-    cout << " Nama       = " << p->getNama() << "\n";
-    cout << " Golongan   = " << p->getGolongan() << "\n";
-    cout << " Clock In   = " << p->getWaktuDatangTeks() << "\n";
-    cout << " Clock Out  = " << p->getWaktuPulangTeks() << "\n";
-    cout << " Gapok      = Rp " << formatRupiah(gapok) << "\n";
-    cout << " Tunjangan  = Rp " << formatRupiah(tunjangan) << "\n";
-    cout << " Potongan   = Rp " << formatRupiah(potongan) << "\n";
-    cout << " Total Gaji = Rp " << formatRupiah(total) << "\n";
-    cout << " Lama Kerja = " << lama / 60 << " jam " << lama % 60 << " menit\n";
+void tampilkanDaftar(const Pegawai daftar[], int jumlah) {
+    Pegawai::cetakHeader();
+    int no = 0;
+    for (int i = 0; i < jumlah; i++) {
+        if (daftar[i].sudahDiisi()) {
+            no++;
+            daftar[i].cetakBaris(no);
+        }
+    }
+    Pegawai::cetakGaris();
 }
 
 int main() {
     Pegawai daftar[3] = {
-        Pegawai(),
-        Pegawai("140810250090", "Razan", 3),
-        Pegawai()
+        Pegawai("001", "Djeremy", 3, Waktu(8, 0, 0), Waktu(17, 15, 10)),
+        Pegawai("002", "Irsyad", 1, Waktu(8, 0, 0), Waktu(15, 30, 0)),
+        Pegawai()  // diisi lewat keyboard
     };
 
-    daftar[1].setWaktuKerja("08:00", "17:30");
-
     int pilihan;
-
     do {
-        cout << "\n===== MENU GajiPegawai =====\n";
-        cout << "1. Hitung Gaji & Lama Kerja (void)\n";
-        cout << "2. Hitung Gaji & Lama Kerja (return)\n";
+        cout << "\n===== MENU GAJI HARIAN PT INFORMATIKA =====\n";
+        cout << "1. Input data pegawai (objek 1-3)\n";
+        cout << "2. Tampilkan daftar gaji harian\n";
         cout << "3. Keluar\n";
         pilihan = bacaInt("Pilih menu: ");
 
         switch (pilihan) {
             case 1:
-                cout << "Hitung (void)\n";
-                HitungVoid(daftar);
+                inputObjek(daftar, 3);
                 break;
             case 2:
-                cout << "Hitung (return)\n";
-                HitungReturn(daftar);
+                tampilkanDaftar(daftar, 3);
                 break;
             case 3:
                 cout << "Keluar dari program.\n";
