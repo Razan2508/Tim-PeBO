@@ -3,7 +3,7 @@ Nama Program  : Selisih Waktu
 Nama Kelompok : Tim PeBO
 Nama Anggota  : Razan Ibrahim Nabil , DJEREMY RIELDY MARCHIANO PANJAITAN , MUHAMMAD IRSYAD AZHARUL HAQ
 NPM  Anggota  : 140810250090 , 140810250063 , 140810250078
-Tanggal Buat  : 16/09/2026
+Tanggal Buat  : 26/09/2026
 Deskripsi     : Mencari selisih waktu berdasarkan input jam , menit , detik
 */
 

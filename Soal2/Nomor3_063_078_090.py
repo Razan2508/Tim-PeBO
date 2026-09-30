@@ -3,7 +3,7 @@ Nama Program  : Gaji Harian dan Lembur Pegawai (Full OOP)
 Nama Kelompok : Tim PeBO
 Nama Anggota  : Razan Ibrahim Nabil, Muhammah Irsyad Azzarul Haq, Djeremy Rieldy Marchiano Panjaitan
 NPM  Anggota  : 140810250090, 250078, 250063
-Tanggal Buat  : 24/09/2026
+Tanggal Buat  : 26/09/2026
 Deskripsi     : Menghitung gaji harian + lembur dengan metode 3 Input (Dalam, Constructor, Luar/Setter).
 '''
 
@@ -17,18 +17,29 @@ def format_rupiah(nilai):
 
 class Waktu:
     def __init__(self, jam=0, menit=0, detik=0):
-        self.jam = jam
-        self.menit = menit
-        self.detik = detik
+        # Fallback ke 0 jika konstruktor menerima nilai yang tidak valid
+        if not self.setJam(jam): self.jam = 0
+        if not self.setMenit(menit): self.menit = 0
+        if not self.setDetik(detik): self.detik = 0
 
+    # Setter dengan Return Boolean
     def setJam(self, jam):
-        self.jam = jam
+        if 0 <= jam <= 23:
+            self.jam = jam
+            return True
+        return False
 
     def setMenit(self, menit):
-        self.menit = menit
+        if 0 <= menit <= 59:
+            self.menit = menit
+            return True
+        return False
 
     def setDetik(self, detik):
-        self.detik = detik
+        if 0 <= detik <= 59:
+            self.detik = detik
+            return True
+        return False
 
     def getJam(self):
         return self.jam
@@ -41,13 +52,29 @@ class Waktu:
 
     def inputDalam(self, pesan):
         print(pesan)
-        jam = int(input("  Jam (0-23)   : "))
-        menit = int(input("  Menit (0-59) : "))
-        detik = int(input("  Detik (0-59) : "))
-        
-        self.setJam(jam)
-        self.setMenit(menit)
-        self.setDetik(detik)
+        while True:
+            try:
+                j = int(input("  Jam (0-23)   : "))
+                if self.setJam(j): break
+            except ValueError:
+                pass
+            print("  [Peringatan] Input jam tidak valid! Silakan ulangi.")
+            
+        while True:
+            try:
+                m = int(input("  Menit (0-59) : "))
+                if self.setMenit(m): break
+            except ValueError:
+                pass
+            print("  [Peringatan] Input menit tidak valid! Silakan ulangi.")
+            
+        while True:
+            try:
+                d = int(input("  Detik (0-59) : "))
+                if self.setDetik(d): break
+            except ValueError:
+                pass
+            print("  [Peringatan] Input detik tidak valid! Silakan ulangi.")
 
     def keDetik(self):
         return self.jam * 3600 + self.menit * 60 + self.detik
@@ -127,7 +154,16 @@ class Pegawai:
     def inputDalam(self):
         self.setNip(input("Masukkan NIP: "))
         self.setNama(input("Masukkan Nama: "))
-        self.setGolongan(int(input("Masukkan Golongan (1/2/3/4): ")))
+        
+        while True:
+            try:
+                gol = int(input("Masukkan Golongan (1/2/3/4): "))
+                if 1 <= gol <= 4:
+                    self.setGolongan(gol)
+                    break
+            except ValueError:
+                pass
+            print("[Peringatan] Golongan hanya 1, 2, 3, atau 4!")
         
         dtg = Waktu()
         dtg.inputDalam("Masukkan Waktu Datang:")
@@ -181,7 +217,12 @@ def main():
         print("3. Input Objek 3 (Cara: Input Luar -> Setter)")
         print("4. Tampilkan Tabel Gaji")
         print("5. Keluar")
-        pilihan = int(input("Pilih menu: "))
+        
+        try:
+            pilihan = int(input("Pilih menu: "))
+        except ValueError:
+            print("Pilihan tidak valid.")
+            continue
 
         if pilihan == 1:
             print("\n--- MENGISI OBJEK 1 (INPUT DALAM) ---")
@@ -198,19 +239,66 @@ def main():
             print("\n--- MENGISI OBJEK 3 (INPUT LUAR -> SETTER) ---")
             obj3.setNip(input("Masukkan NIP: "))
             obj3.setNama(input("Masukkan Nama: "))
-            obj3.setGolongan(int(input("Masukkan Golongan (1/2/3/4): ")))
             
+            while True:
+                try:
+                    gol = int(input("Masukkan Golongan (1/2/3/4): "))
+                    if 1 <= gol <= 4:
+                        obj3.setGolongan(gol)
+                        break
+                except ValueError:
+                    pass
+                print("[Peringatan] Golongan hanya 1, 2, 3, atau 4!")
+            
+            dtgLuar = Waktu()
             print("Masukkan Waktu Datang:")
-            j1 = int(input("  Jam (0-23)   : "))
-            m1 = int(input("  Menit (0-59) : "))
-            d1 = int(input("  Detik (0-59) : "))
-            obj3.setDatang(Waktu(j1, m1, d1))
+            while True:
+                try:
+                    j = int(input("  Jam (0-23)   : "))
+                    if dtgLuar.setJam(j): break
+                except ValueError:
+                    pass
+                print("  [Peringatan] Input jam tidak valid! Silakan ulangi.")
+            while True:
+                try:
+                    m = int(input("  Menit (0-59) : "))
+                    if dtgLuar.setMenit(m): break
+                except ValueError:
+                    pass
+                print("  [Peringatan] Input menit tidak valid! Silakan ulangi.")
+            while True:
+                try:
+                    d = int(input("  Detik (0-59) : "))
+                    if dtgLuar.setDetik(d): break
+                except ValueError:
+                    pass
+                print("  [Peringatan] Input detik tidak valid! Silakan ulangi.")
+            obj3.setDatang(dtgLuar)
             
+            plgLuar = Waktu()
             print("Masukkan Waktu Pulang:")
-            j2 = int(input("  Jam (0-23)   : "))
-            m2 = int(input("  Menit (0-59) : "))
-            d2 = int(input("  Detik (0-59) : "))
-            obj3.setPulang(Waktu(j2, m2, d2))
+            while True:
+                try:
+                    j = int(input("  Jam (0-23)   : "))
+                    if plgLuar.setJam(j): break
+                except ValueError:
+                    pass
+                print("  [Peringatan] Input jam tidak valid! Silakan ulangi.")
+            while True:
+                try:
+                    m = int(input("  Menit (0-59) : "))
+                    if plgLuar.setMenit(m): break
+                except ValueError:
+                    pass
+                print("  [Peringatan] Input menit tidak valid! Silakan ulangi.")
+            while True:
+                try:
+                    d = int(input("  Detik (0-59) : "))
+                    if plgLuar.setDetik(d): break
+                except ValueError:
+                    pass
+                print("  [Peringatan] Input detik tidak valid! Silakan ulangi.")
+            obj3.setPulang(plgLuar)
             
             obj3.proses()
             print("Data Objek 3 tersimpan!")

@@ -3,7 +3,7 @@ Nama Program  : Gaji Harian dan Lembur Pegawai (Full OOP)
 Nama Kelompok : Tim PeBO
 Nama Anggota  : Razan Ibrahim Nabil, Muhammah Irsyad Azzarul Haq, Djeremy Rieldy Marchiano Panjaitan
 NPM  Anggota  : 140810250090, 250078, 250063
-Tanggal Buat  : 24/09/2026
+Tanggal Buat  : 26/09/2026
 Deskripsi     : Menghitung gaji harian + lembur dengan metode 3 Input (Dalam, Constructor, Luar/Setter).
 */
 
@@ -23,44 +23,77 @@ class Waktu {
     }
 
     public Waktu(int jam, int menit, int detik) {
-        this.jam = jam;
-        this.menit = menit;
-        this.detik = detik;
+        // Jika data dari konstruktor tidak valid, atur ke 0
+        if (!this.setJam(jam)) this.jam = 0;
+        if (!this.setMenit(menit)) this.menit = 0;
+        if (!this.setDetik(detik)) this.detik = 0;
     }
 
-    public void setJam(int jam) { 
-        this.jam = jam; 
+    // Setter dengan Return Boolean
+    public boolean setJam(int jam) { 
+        if (jam >= 0 && jam <= 23) {
+            this.jam = jam;
+            return true;
+        }
+        return false;
     }
-    public void setMenit(int menit) { 
-        this.menit = menit; 
+    
+    public boolean setMenit(int menit) { 
+        if (menit >= 0 && menit <= 59) {
+            this.menit = menit;
+            return true;
+        }
+        return false;
     }
-    public void setDetik(int detik) { 
-        this.detik = detik; 
+    
+    public boolean setDetik(int detik) { 
+        if (detik >= 0 && detik <= 59) {
+            this.detik = detik;
+            return true;
+        }
+        return false;
     }
 
-    public int getJam() { 
-        return jam; 
-    }
-    public int getMenit() { 
-        return menit; 
-    }
-    public int getDetik() { 
-        return detik; 
-    }
+    public int getJam() { return jam; }
+    public int getMenit() { return menit; }
+    public int getDetik() { return detik; }
 
     public void inputDalam(String pesan) {
         System.out.println(pesan);
-        System.out.print("  Jam (0-23)   : ");
-        int j = inputWaktu.nextInt();
-        System.out.print("  Menit (0-59) : ");
-        int m = inputWaktu.nextInt();
-        System.out.print("  Detik (0-59) : ");
-        int d = inputWaktu.nextInt();
+        
+        while (true) {
+            System.out.print("  Jam (0-23)   : ");
+            if (inputWaktu.hasNextInt()) {
+                int j = inputWaktu.nextInt();
+                if (this.setJam(j)) break;
+            } else {
+                inputWaktu.next(); // Bersihkan input non-angka
+            }
+            System.out.println("  [Peringatan] Input jam tidak valid! Silakan ulangi.");
+        }
+        
+        while (true) {
+            System.out.print("  Menit (0-59) : ");
+            if (inputWaktu.hasNextInt()) {
+                int m = inputWaktu.nextInt();
+                if (this.setMenit(m)) break;
+            } else {
+                inputWaktu.next();
+            }
+            System.out.println("  [Peringatan] Input menit tidak valid! Silakan ulangi.");
+        }
+        
+        while (true) {
+            System.out.print("  Detik (0-59) : ");
+            if (inputWaktu.hasNextInt()) {
+                int d = inputWaktu.nextInt();
+                if (this.setDetik(d)) break;
+            } else {
+                inputWaktu.next();
+            }
+            System.out.println("  [Peringatan] Input detik tidak valid! Silakan ulangi.");
+        }
         inputWaktu.nextLine();
-
-        this.setJam(j);
-        this.setMenit(m);
-        this.setDetik(d);
     }
 
     public int keDetik() {
@@ -155,31 +188,15 @@ class Pegawai {
         this.proses();
     }
 
-    public void setNip(String nip) { 
-        this.nip = nip; 
-    }
-    public void setNama(String nama) { 
-        this.nama = nama; 
-    }
-    public void setGolongan(int golongan) { 
-        this.golongan = golongan; 
-    }
-    public void setDatang(Waktu datang) { 
-        this.datang = datang; 
-    }
-    public void setPulang(Waktu pulang) { 
-        this.pulang = pulang; 
-    }
+    public void setNip(String nip) { this.nip = nip; }
+    public void setNama(String nama) { this.nama = nama; }
+    public void setGolongan(int golongan) { this.golongan = golongan; }
+    public void setDatang(Waktu datang) { this.datang = datang; }
+    public void setPulang(Waktu pulang) { this.pulang = pulang; }
 
-    public String getNip() { 
-        return nip; 
-    }
-    public String getNama() { 
-        return nama; 
-    }
-    public int getGolongan() { 
-        return golongan; 
-    }
+    public String getNip() { return nip; }
+    public String getNama() { return nama; }
+    public int getGolongan() { return golongan; }
 
     public boolean sudahDiisi() {
         return !nip.isEmpty();
@@ -192,8 +209,19 @@ class Pegawai {
         System.out.print("Masukkan Nama: ");
         this.setNama(inputPegawai.nextLine());
 
-        System.out.print("Masukkan Golongan (1/2/3/4): ");
-        this.setGolongan(inputPegawai.nextInt());
+        while (true) {
+            System.out.print("Masukkan Golongan (1/2/3/4): ");
+            if (inputPegawai.hasNextInt()) {
+                int gol = inputPegawai.nextInt();
+                if (gol >= 1 && gol <= 4) {
+                    this.setGolongan(gol);
+                    break;
+                }
+            } else {
+                inputPegawai.next();
+            }
+            System.out.println("[Peringatan] Golongan hanya 1, 2, 3, atau 4!");
+        }
         inputPegawai.nextLine();
 
         Waktu dtg = new Waktu();
@@ -287,23 +315,66 @@ public class Nomor3_063_078_090 {
                     System.out.print("Masukkan Nama: ");
                     obj3.setNama(scanner.nextLine());
 
-                    System.out.print("Masukkan Golongan (1/2/3/4): ");
-                    obj3.setGolongan(scanner.nextInt());
+                    while (true) {
+                        System.out.print("Masukkan Golongan (1/2/3/4): ");
+                        if (scanner.hasNextInt()) {
+                            int gol = scanner.nextInt();
+                            if (gol >= 1 && gol <= 4) {
+                                obj3.setGolongan(gol);
+                                break;
+                            }
+                        } else {
+                            scanner.next();
+                        }
+                        System.out.println("[Peringatan] Golongan hanya 1, 2, 3, atau 4!");
+                    }
                     scanner.nextLine();
 
+                    Waktu dtgLuar = new Waktu();
                     System.out.println("Masukkan Waktu Datang:");
-                    System.out.print("  Jam (0-23)   : "); int j1 = scanner.nextInt();
-                    System.out.print("  Menit (0-59) : "); int m1 = scanner.nextInt();
-                    System.out.print("  Detik (0-59) : "); int d1 = scanner.nextInt();
+                    while (true) {
+                        System.out.print("  Jam (0-23)   : ");
+                        if (scanner.hasNextInt() && dtgLuar.setJam(scanner.nextInt())) break;
+                        if (!scanner.hasNextInt()) scanner.next();
+                        System.out.println("  [Peringatan] Input jam tidak valid! Silakan ulangi.");
+                    }
+                    while (true) {
+                        System.out.print("  Menit (0-59) : ");
+                        if (scanner.hasNextInt() && dtgLuar.setMenit(scanner.nextInt())) break;
+                        if (!scanner.hasNextInt()) scanner.next();
+                        System.out.println("  [Peringatan] Input menit tidak valid! Silakan ulangi.");
+                    }
+                    while (true) {
+                        System.out.print("  Detik (0-59) : ");
+                        if (scanner.hasNextInt() && dtgLuar.setDetik(scanner.nextInt())) break;
+                        if (!scanner.hasNextInt()) scanner.next();
+                        System.out.println("  [Peringatan] Input detik tidak valid! Silakan ulangi.");
+                    }
                     scanner.nextLine();
-                    obj3.setDatang(new Waktu(j1, m1, d1));
+                    obj3.setDatang(dtgLuar);
 
+                    Waktu plgLuar = new Waktu();
                     System.out.println("Masukkan Waktu Pulang:");
-                    System.out.print("  Jam (0-23)   : "); int j2 = scanner.nextInt();
-                    System.out.print("  Menit (0-59) : "); int m2 = scanner.nextInt();
-                    System.out.print("  Detik (0-59) : "); int d2 = scanner.nextInt();
+                    while (true) {
+                        System.out.print("  Jam (0-23)   : ");
+                        if (scanner.hasNextInt() && plgLuar.setJam(scanner.nextInt())) break;
+                        if (!scanner.hasNextInt()) scanner.next();
+                        System.out.println("  [Peringatan] Input jam tidak valid! Silakan ulangi.");
+                    }
+                    while (true) {
+                        System.out.print("  Menit (0-59) : ");
+                        if (scanner.hasNextInt() && plgLuar.setMenit(scanner.nextInt())) break;
+                        if (!scanner.hasNextInt()) scanner.next();
+                        System.out.println("  [Peringatan] Input menit tidak valid! Silakan ulangi.");
+                    }
+                    while (true) {
+                        System.out.print("  Detik (0-59) : ");
+                        if (scanner.hasNextInt() && plgLuar.setDetik(scanner.nextInt())) break;
+                        if (!scanner.hasNextInt()) scanner.next();
+                        System.out.println("  [Peringatan] Input detik tidak valid! Silakan ulangi.");
+                    }
                     scanner.nextLine();
-                    obj3.setPulang(new Waktu(j2, m2, d2));
+                    obj3.setPulang(plgLuar);
 
                     obj3.proses();
                     System.out.println("Data Objek 3 tersimpan!");

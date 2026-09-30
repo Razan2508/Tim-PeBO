@@ -3,7 +3,7 @@ Nama Program  : Gaji Harian dan Lembur Pegawai (Full OOP)
 Nama Kelompok : Tim PeBO
 Nama Anggota  : Razan Ibrahim Nabil, Muhammah Irsyad Azzarul Haq, Djeremy Rieldy Marchiano Panjaitan
 NPM  Anggota  : 140810250090, 250078, 250063
-Tanggal Buat  : 24/09/2026
+Tanggal Buat  : 26/09/2026
 Deskripsi     : Menghitung gaji harian + lembur dengan metode 3 Input (Dalam, Constructor, Luar/Setter).
 */
 
@@ -21,6 +21,7 @@ string formatRupiah(long long nilai) {
     }
     return angka;
 }
+
 class Waktu {
 private:
     int jam;
@@ -28,6 +29,7 @@ private:
     int detik;
 
 public:
+    // 1. Constructor
     Waktu() {
         this->jam = 0; 
         this->menit = 0; 
@@ -35,42 +37,74 @@ public:
     }
 
     Waktu(int jam, int menit, int detik) {
-        this->jam = jam;
-        this->menit = menit;
-        this->detik = detik;
+        // Jika data dari konstruktor tidak valid, atur ke 0 sebagai fallback aman
+        if (!this->setJam(jam)) this->jam = 0;
+        if (!this->setMenit(menit)) this->menit = 0;
+        if (!this->setDetik(detik)) this->detik = 0;
     }
 
-    void setJam(int jam) { 
-        this->jam = jam; 
+    // 2. Setter dengan Return Boolean (Tolak jika salah, Terima jika benar)
+    bool setJam(int jam) { 
+        if (jam >= 0 && jam <= 23) {
+            this->jam = jam;
+            return true;
+        }
+        return false;
     }
-    void setMenit(int menit) { 
-        this->menit = menit; 
+    
+    bool setMenit(int menit) { 
+        if (menit >= 0 && menit <= 59) {
+            this->menit = menit;
+            return true;
+        }
+        return false;
     }
-    void setDetik(int detik) { 
-        this->detik = detik; 
+    
+    bool setDetik(int detik) { 
+        if (detik >= 0 && detik <= 59) {
+            this->detik = detik;
+            return true;
+        }
+        return false;
     }
 
-    int getJam() const { 
-        return jam; 
-    }
-    int getMenit() const { 
-        return menit; 
-    }
-    int getDetik() const { 
-        return detik; 
-    }
+    // 3. Getter
+    int getJam() const { return jam; }
+    int getMenit() const { return menit; }
+    int getDetik() const { return detik; }
 
     void inputDalam(const string& pesan) {
-        int jam, menit, detik;
+        int j, m, d;
         cout << pesan << "\n";
-        cout << "  Jam (0-23)   : "; cin >> jam;
-        cout << "  Menit (0-59) : "; cin >> menit;
-        cout << "  Detik (0-59) : "; cin >> detik;
-        cin.ignore();
         
-        this->setJam(jam); 
-        this->setMenit(menit); 
-        this->setDetik(detik);
+        // Looping Input Jam
+        while (true) {
+            cout << "  Jam (0-23)   : "; 
+            if (cin >> j && this->setJam(j)) break;
+            
+            // Bersihkan error jika pengguna mengetik huruf
+            cin.clear(); cin.ignore(10000, '\n');
+            cout << "  [Peringatan] Input jam tidak valid! Silakan ulangi.\n";
+        }
+        
+        // Looping Input Menit
+        while (true) {
+            cout << "  Menit (0-59) : "; 
+            if (cin >> m && this->setMenit(m)) break;
+            
+            cin.clear(); cin.ignore(10000, '\n');
+            cout << "  [Peringatan] Input menit tidak valid! Silakan ulangi.\n";
+        }
+        
+        // Looping Input Detik
+        while (true) {
+            cout << "  Detik (0-59) : "; 
+            if (cin >> d && this->setDetik(d)) break;
+            
+            cin.clear(); cin.ignore(10000, '\n');
+            cout << "  [Peringatan] Input detik tidak valid! Silakan ulangi.\n";
+        }
+        cin.ignore();
     }
 
     int keDetik() const { 
@@ -105,7 +139,6 @@ private:
     Waktu datang;
     Waktu pulang;
     
-    // Atribut hasil proses
     Waktu lama;
     Waktu jamLembur;
     long long gajiHarian;
@@ -153,59 +186,45 @@ public:
         this->proses(); 
     }
 
-    void setNip(string nip) { 
-        this->nip = nip; 
-    }
-    void setNama(string nama) { 
-        this->nama = nama; 
-    }
-    void setGolongan(int golongan) { 
-        this->golongan = golongan; 
-    }
-    void setDatang(Waktu datang) { 
-        this->datang = datang; 
-    }
-    void setPulang(Waktu pulang) { 
-        this->pulang = pulang; 
-    }
+    void setNip(string nip) { this->nip = nip; }
+    void setNama(string nama) { this->nama = nama; }
+    void setGolongan(int golongan) { this->golongan = golongan; }
+    void setDatang(Waktu datang) { this->datang = datang; }
+    void setPulang(Waktu pulang) { this->pulang = pulang; }
 
-    string getNip() const { 
-        return nip; 
-    }
-    string getNama() const { 
-        return nama; 
-    }
-    int getGolongan() const { 
-        return golongan; 
-    }
+    string getNip() const { return nip; }
+    string getNama() const { return nama; }
+    int getGolongan() const { return golongan; }
 
-    bool sudahDiisi() const { 
-        return !nip.empty(); 
-    }
+    bool sudahDiisi() const { return !nip.empty(); }
 
     void inputDalam() {
-        string nip, nama;
-        int golongan;
-        Waktu datang, pulang;
+        string n, nm;
+        int gol;
+        Waktu dtg, plg;
 
         cout << "Masukkan NIP: ";
-        getline(cin, nip);
-        this->setNip(nip); 
+        getline(cin, n);
+        this->setNip(n); 
         
         cout << "Masukkan Nama: ";
-        getline(cin, nama);
-        this->setNama(nama); 
+        getline(cin, nm);
+        this->setNama(nm); 
         
-        cout << "Masukkan Golongan (1/2/3/4): ";
-        cin >> golongan;
+        while (true) {
+            cout << "Masukkan Golongan (1/2/3/4): ";
+            if (cin >> gol && (gol >= 1 && gol <= 4)) break;
+            cin.clear(); cin.ignore(10000, '\n');
+            cout << "[Peringatan] Golongan hanya 1, 2, 3, atau 4!\n";
+        }
         cin.ignore();
-        this->setGolongan(golongan); 
+        this->setGolongan(gol); 
         
-        datang.inputDalam("Masukkan Waktu Datang:");
-        this->setDatang(datang);
+        dtg.inputDalam("Masukkan Waktu Datang:");
+        this->setDatang(dtg);
         
-        pulang.inputDalam("Masukkan Waktu Pulang:");
-        this->setPulang(pulang);
+        plg.inputDalam("Masukkan Waktu Pulang:");
+        this->setPulang(plg);
         
         this->proses(); 
     }
@@ -294,23 +313,59 @@ int main() {
                     cout << "Masukkan Nama: "; getline(cin, namaLuar);
                     obj3.setNama(namaLuar); 
 
-                    cout << "Masukkan Golongan (1/2/3/4): "; cin >> golLuar; cin.ignore();
+                    while (true) {
+                        cout << "Masukkan Golongan (1/2/3/4): ";
+                        if (cin >> golLuar && (golLuar >= 1 && golLuar <= 4)) break;
+                        cin.clear(); cin.ignore(10000, '\n');
+                        cout << "[Peringatan] Golongan hanya 1, 2, 3, atau 4!\n";
+                    }
+                    cin.ignore();
                     obj3.setGolongan(golLuar); 
 
+                    // LOOPING INPUT LUAR UNTUK WAKTU DATANG
                     cout << "Masukkan Waktu Datang:\n";
-                    cout << "  Jam (0-23)   : "; cin >> jamLuar;
-                    cout << "  Menit (0-59) : "; cin >> menitLuar;
-                    cout << "  Detik (0-59) : "; cin >> detikLuar;
+                    while (true) {
+                        cout << "  Jam (0-23)   : "; 
+                        if (cin >> jamLuar && datangLuar.setJam(jamLuar)) break;
+                        cin.clear(); cin.ignore(10000, '\n');
+                        cout << "  [Peringatan] Input jam tidak valid! Silakan ulangi.\n";
+                    }
+                    while (true) {
+                        cout << "  Menit (0-59) : "; 
+                        if (cin >> menitLuar && datangLuar.setMenit(menitLuar)) break;
+                        cin.clear(); cin.ignore(10000, '\n');
+                        cout << "  [Peringatan] Input menit tidak valid! Silakan ulangi.\n";
+                    }
+                    while (true) {
+                        cout << "  Detik (0-59) : "; 
+                        if (cin >> detikLuar && datangLuar.setDetik(detikLuar)) break;
+                        cin.clear(); cin.ignore(10000, '\n');
+                        cout << "  [Peringatan] Input detik tidak valid! Silakan ulangi.\n";
+                    }
                     cin.ignore();
-                    datangLuar = Waktu(jamLuar, menitLuar, detikLuar);
                     obj3.setDatang(datangLuar); 
 
+                    // LOOPING INPUT LUAR UNTUK WAKTU PULANG
                     cout << "Masukkan Waktu Pulang:\n";
-                    cout << "  Jam (0-23)   : "; cin >> jamLuar;
-                    cout << "  Menit (0-59) : "; cin >> menitLuar;
-                    cout << "  Detik (0-59) : "; cin >> detikLuar;
+                    while (true) {
+                        cout << "  Jam (0-23)   : "; 
+                        if (cin >> jamLuar && pulangLuar.setJam(jamLuar)) break;
+                        cin.clear(); cin.ignore(10000, '\n');
+                        cout << "  [Peringatan] Input jam tidak valid! Silakan ulangi.\n";
+                    }
+                    while (true) {
+                        cout << "  Menit (0-59) : "; 
+                        if (cin >> menitLuar && pulangLuar.setMenit(menitLuar)) break;
+                        cin.clear(); cin.ignore(10000, '\n');
+                        cout << "  [Peringatan] Input menit tidak valid! Silakan ulangi.\n";
+                    }
+                    while (true) {
+                        cout << "  Detik (0-59) : "; 
+                        if (cin >> detikLuar && pulangLuar.setDetik(detikLuar)) break;
+                        cin.clear(); cin.ignore(10000, '\n');
+                        cout << "  [Peringatan] Input detik tidak valid! Silakan ulangi.\n";
+                    }
                     cin.ignore();
-                    pulangLuar = Waktu(jamLuar, menitLuar, detikLuar);
                     obj3.setPulang(pulangLuar); 
 
                     obj3.proses(); 
