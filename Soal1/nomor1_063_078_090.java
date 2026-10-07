@@ -120,8 +120,8 @@ class Koordinat {
     }
 }
 
-    public class nomor1_063_078_090{
-        public static void main(String[] args) {
+class menu {
+    public static void jalankan() {
         Scanner scanner = new Scanner(System.in);
         Koordinat printer = new Koordinat();
         boolean menuUtamaAktif = true;
@@ -344,5 +344,12 @@ class Koordinat {
                 System.out.println("Pilihan tidak valid! Silakan pilih 1, 2, atau 3.");
             }
         }
+        scanner.close();
     }
+}
+
+public class nomor1_063_078_090 {
+    public static void main(String[] args) {
+        menu.jalankan();
     }
+}

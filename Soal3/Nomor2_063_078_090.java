@@ -89,7 +89,7 @@ class Waktu {
     }
 }
 
-public class Nomor2_063_078_090 {
+class menu {
     static void inputLuar(Waktu w, Scanner sc) {
         int jam = Waktu.bacaAngka(sc, "Jam  ", 0, 23);
         int menit = Waktu.bacaAngka(sc, "Menit", 0, 59);
@@ -153,7 +153,7 @@ public class Nomor2_063_078_090 {
         } while (p != 4);
     }
 
-    public static void main(String[] args) {
+    public static void jalankan() {
         Scanner sc = new Scanner(System.in);
         int p;
         do {
@@ -168,5 +168,12 @@ public class Nomor2_063_078_090 {
             if (p == 1) subMenu(true, sc);
             else if (p == 2) subMenu(false, sc);
         } while (p != 3);
+        sc.close();
+    }
+}
+
+public class Nomor2_063_078_090 {
+    public static void main(String[] args) {
+        menu.jalankan();
     }
 }

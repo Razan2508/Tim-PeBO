@@ -122,7 +122,9 @@ public:
     }
 };
 
-int main() {
+class menu {
+public:
+    static void jalankan() {
     Koordinat printer;
     bool menuUtamaAktif = true;
     int pilihanUtama;
@@ -314,5 +316,10 @@ int main() {
             cout << "Pilihan tidak valid! Silakan pilih 1, 2, atau 3.\n";
         }
     }
+    }
+};
+
+int main() {
+    menu::jalankan();
     return 0;
 }

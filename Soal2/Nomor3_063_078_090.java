@@ -273,8 +273,8 @@ class Pegawai {
     }
 }
 
-public class Nomor3_063_078_090 {
-    public static void main(String[] args) {
+class menu {
+    public static void jalankan() {
         Scanner scanner = new Scanner(System.in);
         
         Pegawai obj1 = new Pegawai();
@@ -401,5 +401,11 @@ public class Nomor3_063_078_090 {
         } while (pilihan != 5);
         
         scanner.close();
+    }
+}
+
+public class Nomor3_063_078_090 {
+    public static void main(String[] args) {
+        menu.jalankan();
     }
 }

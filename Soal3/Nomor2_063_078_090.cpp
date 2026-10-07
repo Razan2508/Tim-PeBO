@@ -95,77 +95,84 @@ public:
     }
 };
 
-void inputLuar(Waktu &w) {
-    int jam, menit, detik;
-    jam = bacaAngka("Jam  ", 0, 23);
-    menit = bacaAngka("Menit", 0, 59);
-    detik = bacaAngka("Detik", 0, 59);
-    
-    w.setJam(jam);
-    w.setMenit(menit);
-    w.setDetik(detik);
-}
-
-void outputLuar(const Waktu &w) {
-    cout << setfill('0') << setw(2) << w.getJam() << ":"
-         << setw(2) << w.getMenit() << ":" << setw(2) << w.getDetik() << endl;
-}
-
-void uji(bool modeVoid, int objek) {
-    Waktu w1, w2, hasil;
-
-    switch (objek) {
-        case 1:
-            cout << "\n[Objek 1 - Input dari Dalam / Setter]" << endl;
-            cout << "Waktu 1:" << endl; w1.inputDalam();
-            cout << "Waktu 2:" << endl; w2.inputDalam();
-            break;
-        case 2: // Input dari Luar / Scanner (cin)
-            cout << "\n[Objek 2 - Input dari Luar / Scanner]" << endl;
-            cout << "Waktu 1:" << endl; inputLuar(w1);
-            cout << "Waktu 2:" << endl; inputLuar(w2);
-            break;
-        case 3: // Input dari Constructor
-            cout << "\n[Objek 3 - Input dari Constructor]" << endl;
-            w1 = Waktu(8, 30, 15);
-            w2 = Waktu(10, 45, 50);
-            break;
+class menu {
+public:
+    static void inputLuar(Waktu &w) {
+        int jam, menit, detik;
+        jam = bacaAngka("Jam  ", 0, 23);
+        menit = bacaAngka("Menit", 0, 59);
+        detik = bacaAngka("Detik", 0, 59);
+        
+        w.setJam(jam);
+        w.setMenit(menit);
+        w.setDetik(detik);
     }
 
-    if (modeVoid) hasil.selisihVoid(w1, w2);
-    else hasil = w1.selisihReturn(w2);
+    static void outputLuar(const Waktu &w) {
+        cout << setfill('0') << setw(2) << w.getJam() << ":"
+             << setw(2) << w.getMenit() << ":" << setw(2) << w.getDetik() << endl;
+    }
 
-    cout << "\nWaktu 1                      : "; w1.outputDalam();
-    cout << "Waktu 2                      : "; w2.outputDalam();
-    cout << "Selisih (output dalam class) : "; hasil.outputDalam();
-    cout << "Selisih (output luar class)  : "; outputLuar(hasil);
-}
+    static void uji(bool modeVoid, int objek) {
+        Waktu w1, w2, hasil;
 
-void subMenu(bool modeVoid) {
-    int p;
-    do {
-        cout << "\n--- SUB MENU: UJI " << (modeVoid ? "VOID" : "RETURN") << " ---" << endl;
-        cout << "1. Objek 1 (Input dari Dalam / Setter)" << endl;
-        cout << "2. Objek 2 (Input dari Luar / Scanner)" << endl;
-        cout << "3. Objek 3 (Input dari Constructor)" << endl;
-        cout << "4. Kembali ke Menu Utama" << endl;
-        cout << "Pilih objek (1-4): "; cin >> p;
-        if (p >= 1 && p <= 3) uji(modeVoid, p);
-    } while (p != 4);
-}
+        switch (objek) {
+            case 1:
+                cout << "\n[Objek 1 - Input dari Dalam / Setter]" << endl;
+                cout << "Waktu 1:" << endl; w1.inputDalam();
+                cout << "Waktu 2:" << endl; w2.inputDalam();
+                break;
+            case 2: // Input dari Luar / Scanner (cin)
+                cout << "\n[Objek 2 - Input dari Luar / Scanner]" << endl;
+                cout << "Waktu 1:" << endl; inputLuar(w1);
+                cout << "Waktu 2:" << endl; inputLuar(w2);
+                break;
+            case 3: // Input dari Constructor
+                cout << "\n[Objek 3 - Input dari Constructor]" << endl;
+                w1 = Waktu(8, 30, 15);
+                w2 = Waktu(10, 45, 50);
+                break;
+        }
+
+        if (modeVoid) hasil.selisihVoid(w1, w2);
+        else hasil = w1.selisihReturn(w2);
+
+        cout << "\nWaktu 1                      : "; w1.outputDalam();
+        cout << "Waktu 2                      : "; w2.outputDalam();
+        cout << "Selisih (output dalam class) : "; hasil.outputDalam();
+        cout << "Selisih (output luar class)  : "; outputLuar(hasil);
+    }
+
+    static void subMenu(bool modeVoid) {
+        int p;
+        do {
+            cout << "\n--- SUB MENU: UJI " << (modeVoid ? "VOID" : "RETURN") << " ---" << endl;
+            cout << "1. Objek 1 (Input dari Dalam / Setter)" << endl;
+            cout << "2. Objek 2 (Input dari Luar / Scanner)" << endl;
+            cout << "3. Objek 3 (Input dari Constructor)" << endl;
+            cout << "4. Kembali ke Menu Utama" << endl;
+            cout << "Pilih objek (1-4): "; cin >> p;
+            if (p >= 1 && p <= 3) uji(modeVoid, p);
+        } while (p != 4);
+    }
+
+    static void jalankan() {
+        int p;
+        do {
+            cout << "\n==========================================" << endl;
+            cout << "               MENU UTAMA" << endl;
+            cout << "==========================================" << endl;
+            cout << "1. Menguji dengan Fungsi Void" << endl;
+            cout << "2. Menguji dengan Fungsi Return" << endl;
+            cout << "3. Keluar" << endl;
+            cout << "Pilih menu (1-3): "; cin >> p;
+            if (p == 1) subMenu(true);
+            else if (p == 2) subMenu(false);
+        } while (p != 3);
+    }
+};
 
 int main() {
-    int p;
-    do {
-        cout << "\n==========================================" << endl;
-        cout << "               MENU UTAMA" << endl;
-        cout << "==========================================" << endl;
-        cout << "1. Menguji dengan Fungsi Void" << endl;
-        cout << "2. Menguji dengan Fungsi Return" << endl;
-        cout << "3. Keluar" << endl;
-        cout << "Pilih menu (1-3): "; cin >> p;
-        if (p == 1) subMenu(true);
-        else if (p == 2) subMenu(false);
-    } while (p != 3);
+    menu::jalankan();
     return 0;
 }

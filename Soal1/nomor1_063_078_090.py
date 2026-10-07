@@ -90,184 +90,191 @@ class Koordinat:
         print(f"CERMIN TERHADAP Y = ({e.getAbsis()},{e.getOrdinat()})")
         print("JARAK ANTARA A DAN B = " , b.jarakReturn(a))
 
-if __name__ == "__main__":
-    printer = Koordinat()
-    menuUtamaAktif = True
 
-    while menuUtamaAktif:
-        print("\n=========================================")
-        print("              MENU UTAMA")
-        print("=========================================")
-        print("1. Menguji dengan Fungsi Void")
-        print("2. Menguji dengan Fungsi Return")
-        print("3. Keluar")
+class menu:
+    @staticmethod
+    def jalankan():
+        printer = Koordinat()
+        menuUtamaAktif = True
+
+        while menuUtamaAktif:
+            print("\n=========================================")
+            print("              MENU UTAMA")
+            print("=========================================")
+            print("1. Menguji dengan Fungsi Void")
+            print("2. Menguji dengan Fungsi Return")
+            print("3. Keluar")
         
-        try:
-            pilihanUtama = int(input("Pilih menu (1-3): "))
-        except ValueError:
-            print("Input harus berupa angka.")
-            continue
+            try:
+                pilihanUtama = int(input("Pilih menu (1-3): "))
+            except ValueError:
+                print("Input harus berupa angka.")
+                continue
 
-        if pilihanUtama == 1:
-            subMenuVoidAktif = True
-            while subMenuVoidAktif:
-                print("\n--- SUB MENU: UJI VOID ---")
-                print("1. Objek 1 (Input dari Dalam / Setter)")
-                print("2. Objek 2 (Input dari Luar / Scanner)")
-                print("3. Objek 3 (Input dari Constructor)")
-                print("4. Kembali ke Menu Utama")
-                pilihanVoid = int(input("Pilih objek yang ingin dilihat (1-4): "))
+            if pilihanUtama == 1:
+                subMenuVoidAktif = True
+                while subMenuVoidAktif:
+                    print("\n--- SUB MENU: UJI VOID ---")
+                    print("1. Objek 1 (Input dari Dalam / Setter)")
+                    print("2. Objek 2 (Input dari Luar / Scanner)")
+                    print("3. Objek 3 (Input dari Constructor)")
+                    print("4. Kembali ke Menu Utama")
+                    pilihanVoid = int(input("Pilih objek yang ingin dilihat (1-4): "))
 
-                if pilihanVoid == 1:
-                    print("\n[ Menjalankan Objek 1 - Void (Setter) ]")
-                    a1, b1 = Koordinat(), Koordinat()
-                    a1.setAbsis(2.0); a1.setOrdinat(4.0)
-                    b1.setAbsis(6.0); b1.setOrdinat(8.0)
+                    if pilihanVoid == 1:
+                        print("\n[ Menjalankan Objek 1 - Void (Setter) ]")
+                        a1, b1 = Koordinat(), Koordinat()
+                        a1.setAbsis(2.0); a1.setOrdinat(4.0)
+                        b1.setAbsis(6.0); b1.setOrdinat(8.0)
 
-                    tengah1, cx1, cy1 = Koordinat(), Koordinat(), Koordinat()
-                    tengah1.titikTengahVoid(a1, b1)
-                    cx1.cerminXVoid(a1)
-                    cy1.cerminYVoid(a1)
-                    printer.cetakVoid(a1, b1, tengah1, cx1, cy1)
-                    print("")
+                        tengah1, cx1, cy1 = Koordinat(), Koordinat(), Koordinat()
+                        tengah1.titikTengahVoid(a1, b1)
+                        cx1.cerminXVoid(a1)
+                        cy1.cerminYVoid(a1)
+                        printer.cetakVoid(a1, b1, tengah1, cx1, cy1)
+                        print("")
 
-                    print("HASIL AKHIR : (VOID) (OUTPUT LUAR)")
-                    print(f"TITIK A = ({a1.getAbsis()},{a1.getOrdinat()})")
-                    print(f"TITIK B = ({b1.getAbsis()},{b1.getOrdinat()})")
-                    print(f"TITIK TENGAH = ({tengah1.getAbsis()},{tengah1.getOrdinat()})")
-                    print(f"CERMIN TERHADAP X = ({cx1.getAbsis()},{cx1.getOrdinat()})")
-                    print(f"CERMIN TERHADAP Y = ({cy1.getAbsis()},{cy1.getOrdinat()})")
-                    b1.jarakVoid(a1) 
+                        print("HASIL AKHIR : (VOID) (OUTPUT LUAR)")
+                        print(f"TITIK A = ({a1.getAbsis()},{a1.getOrdinat()})")
+                        print(f"TITIK B = ({b1.getAbsis()},{b1.getOrdinat()})")
+                        print(f"TITIK TENGAH = ({tengah1.getAbsis()},{tengah1.getOrdinat()})")
+                        print(f"CERMIN TERHADAP X = ({cx1.getAbsis()},{cx1.getOrdinat()})")
+                        print(f"CERMIN TERHADAP Y = ({cy1.getAbsis()},{cy1.getOrdinat()})")
+                        b1.jarakVoid(a1) 
 
-                elif pilihanVoid == 2:
-                    print("\n[ Menjalankan Objek 2 - Void (Scanner) ]")
-                    a2, b2 = Koordinat(), Koordinat()
-                    print("Input Titik A:")
-                    a2.input_data()
-                    print("Input Titik B:")
-                    b2.input_data()
+                    elif pilihanVoid == 2:
+                        print("\n[ Menjalankan Objek 2 - Void (Scanner) ]")
+                        a2, b2 = Koordinat(), Koordinat()
+                        print("Input Titik A:")
+                        a2.input_data()
+                        print("Input Titik B:")
+                        b2.input_data()
 
-                    tengah2, cx2, cy2 = Koordinat(), Koordinat(), Koordinat()
-                    tengah2.titikTengahVoid(a2, b2)
-                    cx2.cerminXVoid(a2)
-                    cy2.cerminYVoid(a2)
-                    printer.cetakVoid(a2, b2, tengah2, cx2, cy2)
-                    print("")
+                        tengah2, cx2, cy2 = Koordinat(), Koordinat(), Koordinat()
+                        tengah2.titikTengahVoid(a2, b2)
+                        cx2.cerminXVoid(a2)
+                        cy2.cerminYVoid(a2)
+                        printer.cetakVoid(a2, b2, tengah2, cx2, cy2)
+                        print("")
 
-                    print("HASIL AKHIR : (VOID) (OUTPUT LUAR)")
-                    print(f"TITIK A = ({a2.getAbsis()},{a2.getOrdinat()})")
-                    print(f"TITIK B = ({b2.getAbsis()},{b2.getOrdinat()})")
-                    print(f"TITIK TENGAH = ({tengah2.getAbsis()},{tengah2.getOrdinat()})")
-                    print(f"CERMIN TERHADAP X = ({cx2.getAbsis()},{cx2.getOrdinat()})")
-                    print(f"CERMIN TERHADAP Y = ({cy2.getAbsis()},{cy2.getOrdinat()})")
-                    b2.jarakVoid(a2) 
+                        print("HASIL AKHIR : (VOID) (OUTPUT LUAR)")
+                        print(f"TITIK A = ({a2.getAbsis()},{a2.getOrdinat()})")
+                        print(f"TITIK B = ({b2.getAbsis()},{b2.getOrdinat()})")
+                        print(f"TITIK TENGAH = ({tengah2.getAbsis()},{tengah2.getOrdinat()})")
+                        print(f"CERMIN TERHADAP X = ({cx2.getAbsis()},{cx2.getOrdinat()})")
+                        print(f"CERMIN TERHADAP Y = ({cy2.getAbsis()},{cy2.getOrdinat()})")
+                        b2.jarakVoid(a2) 
 
-                elif pilihanVoid == 3:
-                    print("\n[ Menjalankan Objek 3 - Void (Constructor) ]")
-                    a3 = Koordinat(-3.0, 5.0)
-                    b3 = Koordinat(7.0, -1.0)
-                    tengah3, cx3, cy3 = Koordinat(), Koordinat(), Koordinat()
+                    elif pilihanVoid == 3:
+                        print("\n[ Menjalankan Objek 3 - Void (Constructor) ]")
+                        a3 = Koordinat(-3.0, 5.0)
+                        b3 = Koordinat(7.0, -1.0)
+                        tengah3, cx3, cy3 = Koordinat(), Koordinat(), Koordinat()
 
-                    tengah3.titikTengahVoid(a3, b3)
-                    cx3.cerminXVoid(a3)
-                    cy3.cerminYVoid(a3)
-                    printer.cetakVoid(a3, b3, tengah3, cx3, cy3)
+                        tengah3.titikTengahVoid(a3, b3)
+                        cx3.cerminXVoid(a3)
+                        cy3.cerminYVoid(a3)
+                        printer.cetakVoid(a3, b3, tengah3, cx3, cy3)
 
-                    print("")
-                    print("HASIL AKHIR : (VOID) (OUTPUT LUAR)")
-                    print(f"TITIK A = ({a3.getAbsis()},{a3.getOrdinat()})")
-                    print(f"TITIK B = ({b3.getAbsis()},{b3.getOrdinat()})")
-                    print(f"TITIK TENGAH = ({tengah3.getAbsis()},{tengah3.getOrdinat()})")
-                    print(f"CERMIN TERHADAP X = ({cx3.getAbsis()},{cx3.getOrdinat()})")
-                    print(f"CERMIN TERHADAP Y = ({cy3.getAbsis()},{cy3.getOrdinat()})")
-                    b3.jarakVoid(a3) 
+                        print("")
+                        print("HASIL AKHIR : (VOID) (OUTPUT LUAR)")
+                        print(f"TITIK A = ({a3.getAbsis()},{a3.getOrdinat()})")
+                        print(f"TITIK B = ({b3.getAbsis()},{b3.getOrdinat()})")
+                        print(f"TITIK TENGAH = ({tengah3.getAbsis()},{tengah3.getOrdinat()})")
+                        print(f"CERMIN TERHADAP X = ({cx3.getAbsis()},{cx3.getOrdinat()})")
+                        print(f"CERMIN TERHADAP Y = ({cy3.getAbsis()},{cy3.getOrdinat()})")
+                        b3.jarakVoid(a3) 
 
-                elif pilihanVoid == 4:
-                    subMenuVoidAktif = False
-                else:
-                    print("Pilihan tidak valid!")
+                    elif pilihanVoid == 4:
+                        subMenuVoidAktif = False
+                    else:
+                        print("Pilihan tidak valid!")
 
-        elif pilihanUtama == 2:
-            subMenuReturnAktif = True
-            while subMenuReturnAktif:
-                print("\n--- SUB MENU: UJI RETURN ---")
-                print("1. Objek 1 (Input dari Dalam / Setter)")
-                print("2. Objek 2 (Input dari Luar / Scanner)")
-                print("3. Objek 3 (Input dari Constructor)")
-                print("4. Kembali ke Menu Utama")
-                pilihanReturn = int(input("Pilih objek yang ingin dilihat (1-4): "))
+            elif pilihanUtama == 2:
+                subMenuReturnAktif = True
+                while subMenuReturnAktif:
+                    print("\n--- SUB MENU: UJI RETURN ---")
+                    print("1. Objek 1 (Input dari Dalam / Setter)")
+                    print("2. Objek 2 (Input dari Luar / Scanner)")
+                    print("3. Objek 3 (Input dari Constructor)")
+                    print("4. Kembali ke Menu Utama")
+                    pilihanReturn = int(input("Pilih objek yang ingin dilihat (1-4): "))
 
-                if pilihanReturn == 1:
-                    print("\n[ Menjalankan Objek 1 - Return (Setter) ]")
-                    a1, b1 = Koordinat(), Koordinat()
-                    a1.setAbsis(10.0); a1.setOrdinat(12.0)
-                    b1.setAbsis(20.0); b1.setOrdinat(24.0)
+                    if pilihanReturn == 1:
+                        print("\n[ Menjalankan Objek 1 - Return (Setter) ]")
+                        a1, b1 = Koordinat(), Koordinat()
+                        a1.setAbsis(10.0); a1.setOrdinat(12.0)
+                        b1.setAbsis(20.0); b1.setOrdinat(24.0)
 
-                    tengah1 = a1.titikTengahReturn(b1)
-                    cx1 = a1.cerminXReturn()
-                    cy1 = a1.cerminYReturn()
-                    printer.cetakReturn(a1, b1, tengah1, cx1, cy1)
+                        tengah1 = a1.titikTengahReturn(b1)
+                        cx1 = a1.cerminXReturn()
+                        cy1 = a1.cerminYReturn()
+                        printer.cetakReturn(a1, b1, tengah1, cx1, cy1)
 
-                    print("")
-                    print("HASIL AKHIR : (RETURN) (OUTPUT LUAR)")
-                    print(f"TITIK A = ({a1.getAbsis()},{a1.getOrdinat()})")
-                    print(f"TITIK B = ({b1.getAbsis()},{b1.getOrdinat()})")
-                    print(f"TITIK TENGAH = ({tengah1.getAbsis()},{tengah1.getOrdinat()})")
-                    print(f"CERMIN TERHADAP X = ({cx1.getAbsis()},{cx1.getOrdinat()})")
-                    print(f"CERMIN TERHADAP Y = ({cy1.getAbsis()},{cy1.getOrdinat()})")
-                    print("JARAK ANTARA A DAN B = " , b1.jarakReturn(a1))
+                        print("")
+                        print("HASIL AKHIR : (RETURN) (OUTPUT LUAR)")
+                        print(f"TITIK A = ({a1.getAbsis()},{a1.getOrdinat()})")
+                        print(f"TITIK B = ({b1.getAbsis()},{b1.getOrdinat()})")
+                        print(f"TITIK TENGAH = ({tengah1.getAbsis()},{tengah1.getOrdinat()})")
+                        print(f"CERMIN TERHADAP X = ({cx1.getAbsis()},{cx1.getOrdinat()})")
+                        print(f"CERMIN TERHADAP Y = ({cy1.getAbsis()},{cy1.getOrdinat()})")
+                        print("JARAK ANTARA A DAN B = " , b1.jarakReturn(a1))
 
-                elif pilihanReturn == 2:
-                    print("\n[ Menjalankan Objek 2 - Return (Scanner) ]")
-                    a2, b2 = Koordinat(), Koordinat()
-                    print("Input Titik A:")
-                    a2.input_data()
-                    print("Input Titik B:")
-                    b2.input_data()
+                    elif pilihanReturn == 2:
+                        print("\n[ Menjalankan Objek 2 - Return (Scanner) ]")
+                        a2, b2 = Koordinat(), Koordinat()
+                        print("Input Titik A:")
+                        a2.input_data()
+                        print("Input Titik B:")
+                        b2.input_data()
 
-                    tengah2 = a2.titikTengahReturn(b2)
-                    cx2 = a2.cerminXReturn()
-                    cy2 = a2.cerminYReturn()
-                    printer.cetakReturn(a2, b2, tengah2, cx2, cy2)
+                        tengah2 = a2.titikTengahReturn(b2)
+                        cx2 = a2.cerminXReturn()
+                        cy2 = a2.cerminYReturn()
+                        printer.cetakReturn(a2, b2, tengah2, cx2, cy2)
 
-                    print("")
+                        print("")
                     
-                    print("HASIL AKHIR : (RETURN) (OUTPUT LUAR)")
-                    print(f"TITIK A = ({a2.getAbsis()},{a2.getOrdinat()})")
-                    print(f"TITIK B = ({b2.getAbsis()},{b2.getOrdinat()})")
-                    print(f"TITIK TENGAH = ({tengah2.getAbsis()},{tengah2.getOrdinat()})")
-                    print(f"CERMIN TERHADAP X = ({cx2.getAbsis()},{cx2.getOrdinat()})")
-                    print(f"CERMIN TERHADAP Y = ({cy2.getAbsis()},{cy2.getOrdinat()})")
-                    print("JARAK ANTARA A DAN B = " , b2.jarakReturn(a2))
+                        print("HASIL AKHIR : (RETURN) (OUTPUT LUAR)")
+                        print(f"TITIK A = ({a2.getAbsis()},{a2.getOrdinat()})")
+                        print(f"TITIK B = ({b2.getAbsis()},{b2.getOrdinat()})")
+                        print(f"TITIK TENGAH = ({tengah2.getAbsis()},{tengah2.getOrdinat()})")
+                        print(f"CERMIN TERHADAP X = ({cx2.getAbsis()},{cx2.getOrdinat()})")
+                        print(f"CERMIN TERHADAP Y = ({cy2.getAbsis()},{cy2.getOrdinat()})")
+                        print("JARAK ANTARA A DAN B = " , b2.jarakReturn(a2))
 
-                elif pilihanReturn == 3:
-                    print("\n[ Menjalankan Objek 3 - Return (Constructor) ]")
-                    a3 = Koordinat(4.0, -8.0)
-                    b3 = Koordinat(-2.0, 6.0)
+                    elif pilihanReturn == 3:
+                        print("\n[ Menjalankan Objek 3 - Return (Constructor) ]")
+                        a3 = Koordinat(4.0, -8.0)
+                        b3 = Koordinat(-2.0, 6.0)
 
-                    tengah3 = a3.titikTengahReturn(b3)
-                    cx3 = a3.cerminXReturn()
-                    cy3 = a3.cerminYReturn()
-                    printer.cetakReturn(a3, b3, tengah3, cx3, cy3)
+                        tengah3 = a3.titikTengahReturn(b3)
+                        cx3 = a3.cerminXReturn()
+                        cy3 = a3.cerminYReturn()
+                        printer.cetakReturn(a3, b3, tengah3, cx3, cy3)
 
-                    print("")
+                        print("")
                                         
-                    print("HASIL AKHIR : (RETURN) (OUTPUT LUAR)")
-                    print(f"TITIK A = ({a3.getAbsis()},{a3.getOrdinat()})")
-                    print(f"TITIK B = ({b3.getAbsis()},{b3.getOrdinat()})")
-                    print(f"TITIK TENGAH = ({tengah3.getAbsis()},{tengah3.getOrdinat()})")
-                    print(f"CERMIN TERHADAP X = ({cx3.getAbsis()},{cx3.getOrdinat()})")
-                    print(f"CERMIN TERHADAP Y = ({cy3.getAbsis()},{cy3.getOrdinat()})")
-                    print("JARAK ANTARA A DAN B = " , b3.jarakReturn(a3))
+                        print("HASIL AKHIR : (RETURN) (OUTPUT LUAR)")
+                        print(f"TITIK A = ({a3.getAbsis()},{a3.getOrdinat()})")
+                        print(f"TITIK B = ({b3.getAbsis()},{b3.getOrdinat()})")
+                        print(f"TITIK TENGAH = ({tengah3.getAbsis()},{tengah3.getOrdinat()})")
+                        print(f"CERMIN TERHADAP X = ({cx3.getAbsis()},{cx3.getOrdinat()})")
+                        print(f"CERMIN TERHADAP Y = ({cy3.getAbsis()},{cy3.getOrdinat()})")
+                        print("JARAK ANTARA A DAN B = " , b3.jarakReturn(a3))
                     
 
-                elif pilihanReturn == 4:
-                    subMenuReturnAktif = False
-                else:
-                    print("Pilihan tidak valid!")
+                    elif pilihanReturn == 4:
+                        subMenuReturnAktif = False
+                    else:
+                        print("Pilihan tidak valid!")
 
-        elif pilihanUtama == 3:
-            print("Keluar dari program. Terima kasih!")
-            menuUtamaAktif = False
-        else:
-            print("Pilihan tidak valid! Silakan pilih 1, 2, atau 3.")
+            elif pilihanUtama == 3:
+                print("Keluar dari program. Terima kasih!")
+                menuUtamaAktif = False
+            else:
+                print("Pilihan tidak valid! Silakan pilih 1, 2, atau 3.")
+
+
+if __name__ == "__main__":
+    menu.jalankan()
