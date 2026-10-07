@@ -9,20 +9,26 @@ Deskripsi     : Mencari selisih waktu berdasarkan input jam , menit , detik
 import java.util.Scanner;
 
 class Waktu {
-    private int jam, menit, detik;
+    private int jam;
+    private int menit;
+    private int detik;
 
+    //Construcstor Kosong
     Waktu() { 
         this.jam = 0;
         this.menit = 0;
         this.detik = 0;
     }
     
+    //Constructor Berparameter
     Waktu(int jam, int menit, int detik) { 
         this.jam = jam;
         this.menit = menit;
         this.detik = detik;
     }
 
+
+    //Setter
     void setJam(int jam) {
         this.jam = jam;
     }
@@ -48,6 +54,7 @@ class Waktu {
         }
     }
 
+    //Getter
     int getJam() { 
         return this.jam; 
     }
@@ -58,6 +65,7 @@ class Waktu {
         return this.detik; 
     }
 
+    //Input Dalam Class
     void inputDalam(Scanner sc) {
         int jam = Waktu.bacaAngka(sc, "Jam  ", 0, 23);
         int menit = Waktu.bacaAngka(sc, "Menit", 0, 59);
@@ -68,6 +76,7 @@ class Waktu {
         this.setDetik(detik);
     }
 
+    //Output Dalam Class
     void outputDalam() {
         System.out.printf("%02d:%02d:%02d%n", this.jam, this.menit, this.detik);
     }
@@ -76,11 +85,13 @@ class Waktu {
         return this.jam * 3600 + this.menit * 60 + this.detik; 
     }
 
+    //Menghitung Pakai (Return)
     Waktu selisihReturn(Waktu w) {
         int s = Math.abs(this.keDetik() - w.keDetik());
         return new Waktu(s / 3600, (s % 3600) / 60, s % 60);
     }
 
+    //Menghitung Pakai (Void)
     void selisihVoid(Waktu w1, Waktu w2) {
         int s = Math.abs(w1.keDetik() - w2.keDetik());
         this.setJam(s / 3600);
@@ -90,6 +101,7 @@ class Waktu {
 }
 
 public class Nomor2_063_078_090 {
+    //Input Luar
     static void inputLuar(Waktu w, Scanner sc) {
         int jam = Waktu.bacaAngka(sc, "Jam  ", 0, 23);
         int menit = Waktu.bacaAngka(sc, "Menit", 0, 59);
@@ -99,7 +111,8 @@ public class Nomor2_063_078_090 {
         w.setMenit(menit);
         w.setDetik(detik);
     }
-
+    
+    //Output Luar
     static void outputLuar(Waktu w) {
         System.out.printf("%02d:%02d:%02d%n", w.getJam(), w.getMenit(), w.getDetik());
     }
