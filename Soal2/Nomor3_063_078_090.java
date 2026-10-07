@@ -1,10 +1,10 @@
 /*
 Nama Program  : Gaji Harian dan Lembur Pegawai (Full OOP)
 Nama Kelompok : Tim PeBO
-Nama Anggota  : Razan Ibrahim Nabil, Muhammah Irsyad Azzarul Haq, Djeremy Rieldy Marchiano Panjaitan
+Nama Anggota  : Razan Ibrahim Nabil, Muhamad Irsyad Azzarul Haq, Djeremy Rieldy Marchiano Panjaitan
 NPM  Anggota  : 140810250090, 250078, 250063
-Tanggal Buat  : 26/09/2026
-Deskripsi     : Menghitung gaji harian + lembur dengan metode 3 Input (Dalam, Constructor, Luar/Setter).
+Tanggal Buat  : 05/10/2026
+Deskripsi     : Menghitung gaji harian + lembur dengan metode 3 Input (Dalam, Constructor, Luar/Setter). + mengubah fungsi menu menjadi class sendiri
 */
 
 import java.util.Scanner;
@@ -271,9 +271,9 @@ class Pegawai {
     }
 }
 
-public class Nomor3_063_078_090 {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+class menu{
+    public static void jalankan(){
+     Scanner scanner = new Scanner(System.in);
         
         Pegawai obj1 = new Pegawai();
         Pegawai obj2 = new Pegawai();
@@ -399,5 +399,11 @@ public class Nomor3_063_078_090 {
         } while (pilihan != 5);
         
         scanner.close();
+    }
+}
+
+public class Nomor3_063_078_090 {
+    public static void main(String[] args) {
+        menu.jalankan();
     }
 }
