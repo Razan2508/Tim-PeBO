@@ -271,9 +271,9 @@ class Pegawai {
     }
 }
 
-class menu {
-    public static void jalankan() {
-        Scanner scanner = new Scanner(System.in);
+class menu{
+    public static void jalankan(){
+     Scanner scanner = new Scanner(System.in);
         
         Pegawai obj1 = new Pegawai();
         Pegawai obj2 = new Pegawai();

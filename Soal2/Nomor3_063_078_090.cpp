@@ -13,7 +13,6 @@ Deskripsi     : Menghitung gaji harian + lembur dengan metode 3 Input (Dalam, Co
 
 using namespace std;
 
-// --- FUNGSI BANTUAN FORMAT UANG ---
 string formatRupiah(long long nilai) {
     string angka = to_string(nilai);
     for (int i = static_cast<int>(angka.size()) - 3; i > 0; i -= 3) {
@@ -29,7 +28,7 @@ private:
     int detik;
 
 public:
-    // 1. Constructor
+    //Constructor
     Waktu() {
         this->jam = 0; 
         this->menit = 0; 
@@ -37,13 +36,11 @@ public:
     }
 
     Waktu(int jam, int menit, int detik) {
-        // Jika data dari konstruktor tidak valid, atur ke 0 sebagai fallback aman
         if (!this->setJam(jam)) this->jam = 0;
         if (!this->setMenit(menit)) this->menit = 0;
         if (!this->setDetik(detik)) this->detik = 0;
     }
 
-    // 2. Setter dengan Return Boolean (Tolak jika salah, Terima jika benar)
     bool setJam(int jam) { 
         if (jam >= 0 && jam <= 23) {
             this->jam = jam;
@@ -68,7 +65,7 @@ public:
         return false;
     }
 
-    // 3. Getter
+    //Getter
     int getJam() const { return jam; }
     int getMenit() const { return menit; }
     int getDetik() const { return detik; }
@@ -77,17 +74,14 @@ public:
         int j, m, d;
         cout << pesan << "\n";
         
-        // Looping Input Jam
         while (true) {
             cout << "  Jam (0-23)   : "; 
             if (cin >> j && this->setJam(j)) break;
             
-            // Bersihkan error jika pengguna mengetik huruf
             cin.clear(); cin.ignore(10000, '\n');
             cout << "  [Peringatan] Input jam tidak valid! Silakan ulangi.\n";
         }
         
-        // Looping Input Menit
         while (true) {
             cout << "  Menit (0-59) : "; 
             if (cin >> m && this->setMenit(m)) break;
@@ -96,7 +90,6 @@ public:
             cout << "  [Peringatan] Input menit tidak valid! Silakan ulangi.\n";
         }
         
-        // Looping Input Detik
         while (true) {
             cout << "  Detik (0-59) : "; 
             if (cin >> d && this->setDetik(d)) break;

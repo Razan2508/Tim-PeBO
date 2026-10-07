@@ -7,7 +7,6 @@ Tanggal Buat  : 26/09/2026
 Deskripsi     : Menghitung gaji harian + lembur dengan metode 3 Input (Dalam, Constructor, Luar/Setter).
 '''
 
-# --- FUNGSI BANTUAN FORMAT UANG ---
 def format_rupiah(nilai):
     angka = str(nilai)
     panjang = len(angka)
@@ -17,12 +16,10 @@ def format_rupiah(nilai):
 
 class Waktu:
     def __init__(self, jam=0, menit=0, detik=0):
-        # Fallback ke 0 jika konstruktor menerima nilai yang tidak valid
         if not self.setJam(jam): self.jam = 0
         if not self.setMenit(menit): self.menit = 0
         if not self.setDetik(detik): self.detik = 0
 
-    # Setter dengan Return Boolean
     def setJam(self, jam):
         if 0 <= jam <= 23:
             self.jam = jam
